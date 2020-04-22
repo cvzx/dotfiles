@@ -1,0 +1,6 @@
+[user]
+	name = Aleh Shapo
+	email = xqvcaa@gmail.com
+[core]
+	editor = nvim
+	excludesfile = /home/hzyy/.gitignore
