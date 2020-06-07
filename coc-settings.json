@@ -1,0 +1,6 @@
+{
+  "solargraph.commandPath": "/Users/aleh.shapo/.rvm/gems/ruby-2.5.8/bin/solargraph",
+  "solargraph.promptDownload": true,
+  "solargraph.useBundler": false,
+  "solargraph.checkGemVersion": false
+}
