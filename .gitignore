@@ -6,3 +6,4 @@ tmux*
 .overcommit.yml
 .solargraph.yml
 .env
+.projections.json
