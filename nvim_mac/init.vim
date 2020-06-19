@@ -3,7 +3,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
 Plug 'janko/vim-test'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -17,18 +17,16 @@ Plug 'bling/vim-bufferline'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdcommenter'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-dispatch'
 Plug 'farmergreg/vim-lastplace'
-Plug 'thaerkh/vim-workspace'
 Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'majutsushi/tagbar'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-rooter'
 Plug 'jgdavey/tslime.vim'
 Plug 'kylef/apiblueprint.vim'
@@ -40,6 +38,8 @@ Plug 'andrewradev/splitjoin.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'tpope/vim-vinegar'
+Plug 'thaerkh/vim-workspace'
 
 " colorschemes
 Plug 'morhetz/gruvbox'
@@ -93,6 +93,7 @@ set colorcolumn=90
 
 " Disable hiding quotes in json files
 autocmd Filetype json let g:indentLine_enabled = 0
+"plugin
 
 syntax on
 
@@ -118,7 +119,6 @@ set foldlevel=2
 set expandtab
 set tabstop=2
 set shiftwidth=2
-let g:indentLine_char = '│'
 set smartindent
 
 " linenumbers
@@ -128,6 +128,12 @@ set nu
 " splits open on rightside
 set splitright
 set splitbelow
+
+"sessions
+let g:workspace_session_directory = $HOME . '/nvim_sessions/'
+let g:workspace_session_disable_on_args = 1
+let g:workspace_undodir='.undodir'
+let g:workspace_autosave_always = 1
 
 " airline settings
 let g:airline#extensions#ale#enabled = 1
@@ -141,10 +147,15 @@ let g:coc_global_extensions = ['coc-solargraph']
 " slime settings
 let g:slime_target = 'tmux'
 
+" netrw
+let g:netrw_fastbrowse = 0
+let g:netrw_liststyle = 3
+
 " test runner settings
 let test#strategy = 'tslime'
 let test#elixir#runner = 'exunit'
-let test#ruby#rspec#executable = 'bundle exec rspec'
+"let test#ruby#rspec#executable = 'bundle exec rspec'
+let test#ruby#rspec#executable = 'bundle exec spring rspec'
 "let test#ruby#rspec#executable = 'docker-compose run gizmo rspec'
 
 "disabledb because of COC solargraph errors
@@ -183,22 +194,11 @@ let g:ale_lint_on_save = 1
 let g:ale_lint_on_enter = 1
 let g:ale_fix_on_save = 0
 
-" workspaces
-" sessions to not load if you're explicitly loading a file in a workspace directory
-let g:workspace_session_disable_on_args = 1
-let g:workspace_autosave_always = 1
-" save all your session files in a single directory outside of your workspace
-let g:workspace_session_directory = $HOME . '/.config/nvim/sessions/'
-
 " close fzf finder via <esc>
 autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
 
 " search highlighting
 set nohlsearch
-
-" NERDTree
-let g:NERDTreeMapActivateNode="<F3>"
-let g:NERDTreeMapPreview="<F4>"
 
 " guten tags will use ripgrep -> ripgrep would respect our .gitignore
 let g:gutentags_file_list_command = 'rg --files'
@@ -239,14 +239,7 @@ let g:vim_json_conceal=0
 
 " vim-rails settings
 " projections
-let g:rails_projections = {
-  \"app/controllers/*_controller.rb": {
-  \  "alternate": "spec/requests/{}_controller_spec.rb",
-  \  },
-  \"spec/requests/*_controller.rb": {
-  \  "alternate": "app/controllers/{}_controller.rb"
-  \  }
-  \}
+"let g:rails_projections = {}
 
 " maps
   " fuzzy find maps
@@ -289,14 +282,11 @@ let g:rails_projections = {
   nnoremap [r :ALEPreviousWrap<CR>
 
   " NERDTree
-  nnoremap <F2> :NERDTreeToggle<CR>
-  nnoremap <F3> :NERDTreeFind<CR>
-
+  " nnoremap <F2> :NERDTreeToggle<CR>
+  " nnoremap <F3> :NERDTreeFind<CR>
+  
   " Tagbar
-  nmap <F1> :TagbarToggle<CR>
-
-  "workspace maps
-  nnoremap <Leader>wt :ToggleWorkspace<CR>
+  nnoremap <F1> :TagbarToggle<CR>
 
   " deoplete tab-complete
   inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"

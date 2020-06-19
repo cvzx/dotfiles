@@ -1,8 +1,0 @@
-{
-  "app/controllers/*_controller.rb": {
-    "alternate": "spec/requests/{}_controller_spec.rb"
-  },
-  "spec/requests/*_controller_spec.rb": {
-    "alternate": "app/controllers/{}_controller.rb"
-  }
-}

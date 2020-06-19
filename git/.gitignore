@@ -1,7 +1,8 @@
 tags*
-.undodir
 coverage
 tmux*
+Session.vim
+.undodir
 .DS_Store
 .overcommit.yml
 .solargraph.yml
