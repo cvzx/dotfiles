@@ -4,6 +4,7 @@ require:
  - rubocop-performance
  - rubocop-rails
  - rubocop-rspec
+ - rubocop-thread_safety
 
 AllCops:
   Exclude:
@@ -22,6 +23,9 @@ Metrics/LineLength:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
 
 # We allow using [allow/expect]_any_instance_of
 RSpec/AnyInstance:
