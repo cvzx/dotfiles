@@ -1,6 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdcommenter'
@@ -33,13 +34,13 @@ Plug 'kylef/apiblueprint.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'easymotion/vim-easymotion'
-Plug 'mattesgroeger/vim-bookmarks'
 Plug 'andrewradev/splitjoin.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'tpope/vim-vinegar'
-Plug 'thaerkh/vim-workspace'
+Plug 'vifm/vifm.vim'
+Plug 'neoclide/coc-solargraph'
+Plug 'pseewald/vim-anyfold'
 
 " colorschemes
 Plug 'morhetz/gruvbox'
@@ -50,6 +51,8 @@ Plug 'badacadabra/vim-archery'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'lifepillar/vim-solarized8'
 Plug 'flazz/vim-colorschemes'
+Plug 'cormacrelf/vim-colors-github'
+Plug 'altercation/vim-colors-solarized'
 
 " elixir
 Plug 'mhinz/vim-mix-format'
@@ -105,15 +108,19 @@ syntax on
 "colorscheme onedark
 "colorscheme dracula
 "colorscheme solarized8_high
-colorscheme molokai
-"set background=light
+"colorscheme molokai
+"colorscheme Tomorrow-Night-Eighties
+colorscheme solarized8
+let ruby_operators = 1
+"colorscheme github
 "set background=dark
-
-" folding
-set foldmethod=syntax
-set foldnestmax=10
-set nofoldenable
-set foldlevel=2
+set background=light
+ 
+" foldings
+"let viewdir=$HOME . '/.config/nvim/views/'
+"set foldmethod=syntax
+autocmd Filetype * AnyFoldActivate
+set foldlevel=99
 
 " indents
 set expandtab
@@ -130,18 +137,21 @@ set splitright
 set splitbelow
 
 "sessions
-let g:workspace_session_directory = $HOME . '/nvim_sessions/'
-let g:workspace_session_disable_on_args = 1
-let g:workspace_undodir='.undodir'
-let g:workspace_autosave_always = 1
+" sessions to not load if you're explicitly loading a file in a workspace directory
+"let g:workspace_session_disable_on_args = 1	
+"let g:workspace_autosave_always = 1
+" save all your session files in a single directory outside of your workspace	
+"let g:workspace_session_directory = $HOME . '/.config/nvim/sessions/'
 
 " airline settings
 let g:airline#extensions#ale#enabled = 1
-let g:airline_theme='onedark'
+let g:airline_theme='solarized'
+"let g:airline_theme='github'
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
+" Coc settings
 let g:coc_global_extensions = ['coc-solargraph']
 
 " slime settings
@@ -155,7 +165,7 @@ let g:netrw_liststyle = 3
 let test#strategy = 'tslime'
 let test#elixir#runner = 'exunit'
 "let test#ruby#rspec#executable = 'bundle exec rspec'
-let test#ruby#rspec#executable = 'bundle exec spring rspec'
+let test#ruby#rspec#executable = "bundle exec spring rspec"
 "let test#ruby#rspec#executable = 'docker-compose run gizmo rspec'
 
 "disabledb because of COC solargraph errors
@@ -208,6 +218,7 @@ let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_empty_buffer = 0
 let g:gutentags_ctags_auto_set_tags = 1
 let g:gutentags_ctags_extra_args = ['--tag-relative=yes', '--fields=+ailmnS']
+let g:gutentags_exclude_filetypes = ['gitcommit', 'gitconfig', 'gitrebase', 'gitsendemail', 'git']
 
 " snippets bindings
 let g:UltiSnipsExpandTrigger="<C-l>"
@@ -277,13 +288,11 @@ let g:vim_json_conceal=0
   xmap ga <Plug>(EasyAlign)
   nmap ga <Plug>(EasyAlign)
 
-  "Move between linting errors
+  " Move between linting errors
   nnoremap ]r :ALENextWrap<CR>
   nnoremap [r :ALEPreviousWrap<CR>
 
-  " NERDTree
-  " nnoremap <F2> :NERDTreeToggle<CR>
-  " nnoremap <F3> :NERDTreeFind<CR>
+  " Move between files on GReview
   
   " Tagbar
   nnoremap <F1> :TagbarToggle<CR>
@@ -291,8 +300,17 @@ let g:vim_json_conceal=0
   " deoplete tab-complete
   inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
+  " Find word through the project via RipGrep
   nnoremap <Leader>rg :Rg <C-r>=expand("<cword>")<CR><CR>
+
+  " Find tag by the name in single quotes
   nnoremap <Leader>fc  vi'<C-]><CR>
+
+  " Resize window width to 96
+  nnoremap <Leader>ww :vertical resize 96<CR>
+
+  " Add byebug line
+  nnoremap <Leader>bye obyebug<Esc>
 
   nnoremap ; :
   nnoremap : ;
@@ -303,29 +321,10 @@ let g:vim_json_conceal=0
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
 
-  "Bookmarks bindings
-  let g:bookmark_no_default_key_mappings = 1
-  "Dodger blue color for bookmarks
-  highlight BookmarkSign ctermfg=27 cterm=bold guifg=DodgerBlue2 gui=bold
-  "Dodger green color for annotation
-  highlight BookmarkAnnotationSign ctermbg=2 cterm=bold guifg=Green gui=bold
-
-  nmap <Leader>mm <Plug>BookmarkToggle
-  nmap <Leader>mi <Plug>BookmarkAnnotate
-  nmap <Leader>ma <Plug>BookmarkShowAll
-  nmap <Leader>mn <Plug>BookmarkNext
-  nmap <Leader>mp <Plug>BookmarkPrev
-  nmap <Leader>mc <Plug>BookmarkClear
-  nmap <Leader>mx <Plug>BookmarkClearAll
-  nmap <Leader>mkk <Plug>BookmarkMoveUp
-  nmap <Leader>mjj <Plug>BookmarkMoveDown
-  nmap <Leader>mg <Plug>BookmarkMoveToLine
-
   "tslime bindings
   vmap <C-c><C-c> <Plug>SendSelectionToTmux
   nmap <C-c><C-c> <Plug>NormalModeSendToTmux
   nmap <C-c>r <Plug>SetTmuxVars
-
 
   " toggle paste in cmd only
   nnoremap <Leader>n :set invpaste<CR>
@@ -335,6 +334,8 @@ let g:vim_json_conceal=0
   vnoremap <silent> <C-c> "+y
   " paste from clipboard
   inoremap <silent> <C-v> <ESC>"+pa
+  " select pasted text
+  nnoremap <expr> gV    "`[".getregtype(v:register)[0]."`]"
 
   noremap <Up> <Nop>
   noremap <Down> <Nop>
