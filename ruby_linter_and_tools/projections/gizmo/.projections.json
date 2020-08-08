@@ -1,0 +1,11 @@
+{
+  "app/controllers/*_controller.rb": {
+    "alternate": "spec/requests/{}_spec.rb"
+  },
+  "lib/gizmo/exceptions/*_exception.rb": {
+    "related": "app/decorators/render/gizmo/exceptions/{}_decorator.rb"
+  },
+  "spec/requests/*_spec.rb": {
+    "alternate": "app/controllers/{}_controller.rb"
+  }
+}
