@@ -27,7 +27,6 @@ Plug 'yggdroot/indentline'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
-Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-rooter'
 Plug 'jgdavey/tslime.vim'
 Plug 'kylef/apiblueprint.vim'
@@ -38,9 +37,11 @@ Plug 'andrewradev/splitjoin.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'vifm/vifm.vim'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
 Plug 'neoclide/coc-solargraph'
 Plug 'pseewald/vim-anyfold'
+Plug 'majutsushi/tagbar'
 
 " colorschemes
 Plug 'morhetz/gruvbox'
@@ -144,8 +145,8 @@ set splitbelow
 "let g:workspace_session_directory = $HOME . '/.config/nvim/sessions/'
 
 " airline settings
-let g:airline#extensions#ale#enabled = 1
-let g:airline_theme='solarized'
+"let g:airline#extensions#ale#enabled = 1
+"let g:airline_theme='solarized'
 "let g:airline_theme='github'
 
 " Required for operations modifying multiple buffers like rename.
@@ -209,6 +210,9 @@ autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
 
 " search highlighting
 set nohlsearch
+
+" tagbar
+let g:tagbar_type_ruby = { 'ctagstype': 'rspec', 'kinds': ['d:describes'], }
 
 " guten tags will use ripgrep -> ripgrep would respect our .gitignore
 let g:gutentags_file_list_command = 'rg --files'

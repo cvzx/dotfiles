@@ -1,0 +1,6 @@
+--regex-RSpec=/^[ \t]*feature ['"](.*)['"].* do/\1/d,describe,describes
+--regex-RSpec=/^[ \t]*it ['"](.*)['"].* do/\1/d,describe,describes
+--regex-RSpec=/^[ \t]*scenario ['"](.*)['"].* do/\1/d,describe,describes
+--regex-RSpec=/^[ \t]*shared_examples ['"](.*)['"] do/\1/d,describe,describes
+--regex-RSpec=/^[ \t]*shared_examples_for ['"](.*)['"] do/\1/d,describe,describes
+--regex-RSpec=/^[ \t]*shared_context ['"](.*)['"] do/\1/d,describe,describes

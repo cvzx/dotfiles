@@ -1,0 +1,6 @@
+--recurse=yes
+--exclude=bower_components
+--exclude=node_modules
+--exclude=vendor
+--regex-ruby=/(^|;)[ \t]*(has_many|belongs_to|has_one|has_and_belongs_to_many)\(? *:([[:alnum:]_]+)/\3/f,function,association/*/
+
