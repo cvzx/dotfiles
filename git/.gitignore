@@ -1,3 +1,5 @@
+*.todo.md
+*.tdd
 tags*
 sorbet
 coverage
@@ -9,3 +11,4 @@ Session.vim
 .solargraph.yml
 .env
 .projections.json
+.rspec

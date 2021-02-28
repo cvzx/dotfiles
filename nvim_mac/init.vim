@@ -14,11 +14,10 @@ Plug 'terryma/vim-expand-region'
 Plug 'kana/vim-textobj-user'
 Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-unimpaired'
-Plug 'bling/vim-bufferline'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-dispatch'
 Plug 'farmergreg/vim-lastplace'
@@ -39,9 +38,19 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
-Plug 'neoclide/coc-solargraph'
-Plug 'pseewald/vim-anyfold'
+" Plug 'neoclide/coc-solargraph'
+" Plug 'pseewald/vim-anyfold'
+Plug 'hashivim/vim-terraform'
 Plug 'majutsushi/tagbar'
+Plug 'aserebryakov/vim-todo-lists'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-repeat'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'kshenoy/vim-signature'
+Plug 'tpope/vim-sensible'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'blueyed/vim-diminactive'
+" Plug 'codota/tabnine-vim'
 
 " colorschemes
 Plug 'morhetz/gruvbox'
@@ -54,15 +63,19 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'flazz/vim-colorschemes'
 Plug 'cormacrelf/vim-colors-github'
 Plug 'altercation/vim-colors-solarized'
+Plug 'paramagicdev/vim-medic_chalk'
+Plug 'mhartington/oceanic-next'
+Plug 'mcmartelle/vim-monokai-bold'
+Plug 'adlawson/vim-sorcerer'
 
 " elixir
-Plug 'mhinz/vim-mix-format'
-Plug 'jakebecker/elixir-ls'
-Plug 'andyl/vim-textobj-elixir'
-Plug 'elixir-editors/vim-elixir'
-Plug 'c-brenn/phoenix.vim'
-Plug 'tpope/vim-projectionist'
-Plug 'mattreduce/vim-mix'
+" Plug 'mhinz/vim-mix-format'
+" Plug 'jakebecker/elixir-ls'
+" Plug 'andyl/vim-textobj-elixir'
+" Plug 'elixir-editors/vim-elixir'
+" Plug 'c-brenn/phoenix.vim'
+" Plug 'tpope/vim-projectionist'
+" Plug 'mattreduce/vim-mix'
 
 " ruby
 Plug 'tpope/vim-rails'
@@ -70,27 +83,31 @@ Plug 'tpope/vim-bundler'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/ruby-matchit'
 Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'kchmck/vim-coffee-script'
-Plug 'slim-template/vim-slim'
-Plug 'tpope/vim-rake'
-Plug 'ecomba/vim-ruby-refactoring'
+" Plug 'kchmck/vim-coffee-script'
+" Plug 'slim-template/vim-slim'
+" Plug 'tpope/vim-rake'
+" Plug 'ecomba/vim-ruby-refactoring'
 Plug 'jgdavey/vim-blockle'
 Plug 'thoughtbot/vim-rspec'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " coffee
-Plug 'lukaszkorecki/coffeetags'
+" Plug 'lukaszkorecki/coffeetags'
 
 call plug#end()
 
 " mouse mode
 "set mouse=a
 
+" set _ as a word separator
+"set iskeyword-=_
+
 " Leader key
 let mapleader = "\<Space>"
 
 set termguicolors
 set t_Co=256
+let g:solarized_termcolors=256
 
 " set line length marker
 set colorcolumn=90
@@ -99,29 +116,51 @@ set colorcolumn=90
 autocmd Filetype json let g:indentLine_enabled = 0
 "plugin
 
-syntax on
-
 " colorschemes
-"colorscheme iceberg
-"colorscheme nord
-"colorscheme gruvbox
-"colorscheme archery
-"colorscheme onedark
-"colorscheme dracula
-"colorscheme solarized8_high
-"colorscheme molokai
+" colorscheme iceberg
+" colorscheme nord
+" colorscheme gruvbox
+" colorscheme archery
+" colorscheme onedark
+" colorscheme dracula
+" colorscheme molokai
+" colorscheme monokai-bold
 "colorscheme Tomorrow-Night-Eighties
+" colorscheme solarized8_high
 colorscheme solarized8
-let ruby_operators = 1
-"colorscheme github
-"set background=dark
+"colorscheme solarized
+" colorscheme github
+" colorscheme medic_chalk
+"colorscheme OceanicNext
+" colorscheme sorcerer
+
+" LIGHT THEME
 set background=light
+let g:airline_theme='solarized'
+highlight ALEWarning ctermbg=lightgray guibg=lightgray
+highlight ALEError ctermbg=lightgray guibg=lightgray
+
+" DARK THEME
+" set background=dark
+" let g:airline_theme='solarized_flood'
+" highlight ALEWarning ctermbg=gray guibg=darkslategray
+" highlight ALEError ctermbg=gray guibg=darkslategray
+" hi EasyMotionTarget guibg=none guifg=#ff2400
+" hi EasyMotionShade guibg=none guifg=none
+" hi EasyMotionTarget2First guibg=none guifg=#ff2400
+" hi EasyMotionTarget2Second guibg=none guifg=#ff2400
+
+" airline settings
+"let g:airline#extensions#ale#enabled = 1
+"let g:airline#extensions#branch = '0'
+"let g:airline#extensions#fugitiveline = '0'
+"let g:airline_theme='github'
  
 " foldings
-"let viewdir=$HOME . '/.config/nvim/views/'
-"set foldmethod=syntax
-autocmd Filetype * AnyFoldActivate
-set foldlevel=99
+" let viewdir=$HOME . '/.config/nvim/views/'
+" set foldmethod=syntax
+" autocmd Filetype * AnyFoldActivate
+" set foldlevel=99
 
 " indents
 set expandtab
@@ -129,13 +168,26 @@ set tabstop=2
 set shiftwidth=2
 set smartindent
 
-" linenumbers
-set cursorline
+" line numbers
 set nu
 
 " splits open on rightside
 set splitright
 set splitbelow
+
+" comments
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+
+" experimental options to speed up the scrolling with ruby syntax on
+set ttyfast
+set regexpengine=1
+set synmaxcol=100
+syntax sync minlines=100
+set lazyredraw
+"let ruby_operators = 1
+"set cursorline
+"syntax off
 
 "sessions
 " sessions to not load if you're explicitly loading a file in a workspace directory
@@ -144,13 +196,8 @@ set splitbelow
 " save all your session files in a single directory outside of your workspace	
 "let g:workspace_session_directory = $HOME . '/.config/nvim/sessions/'
 
-" airline settings
-"let g:airline#extensions#ale#enabled = 1
-"let g:airline_theme='solarized'
-"let g:airline_theme='github'
-
 " Required for operations modifying multiple buffers like rename.
-set hidden
+" set hidden
 
 " Coc settings
 let g:coc_global_extensions = ['coc-solargraph']
@@ -170,7 +217,7 @@ let test#ruby#rspec#executable = "bundle exec spring rspec"
 "let test#ruby#rspec#executable = 'docker-compose run gizmo rspec'
 
 "disabledb because of COC solargraph errors
-"let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_complete_delay = 200
 
@@ -193,9 +240,7 @@ let g:ale_fixers.ruby = ['standardrb', 'rubocop']
 let g:ale_sign_error = '✘'
 highlight ALEErrorSign ctermfg=red guifg=red
 let g:ale_sign_warning = '⚠'
-highlight ALEWarningSign ctermfg=yellow guifg=yellow cterm=bold gui=bold
-highlight ALEWarning ctermbg=239 guibg=Grey30
-highlight ALEError ctermbg=239 guibg=Grey30
+highlight ALEWarningSign ctermfg=blue guifg=blue
 
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 1
@@ -223,6 +268,7 @@ let g:gutentags_generate_on_empty_buffer = 0
 let g:gutentags_ctags_auto_set_tags = 1
 let g:gutentags_ctags_extra_args = ['--tag-relative=yes', '--fields=+ailmnS']
 let g:gutentags_exclude_filetypes = ['gitcommit', 'gitconfig', 'gitrebase', 'gitsendemail', 'git']
+" let g:gutentags_trace = 1
 
 " snippets bindings
 let g:UltiSnipsExpandTrigger="<C-l>"
@@ -257,17 +303,23 @@ let g:vim_json_conceal=0
 "let g:rails_projections = {}
 
 " maps
-  " fuzzy find maps
+  " Fzf search among files
   " fzf file fuzzy search that respects .gitignore
   " If in git directory, show only files that are committed, staged, or unstaged
   " else use regular :Files
   nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
 
-  " Fix linter errors
-  nnoremap <silent> af :ALEFix<cr>
+  " Fzf search among buffers
+  nnoremap <C-b> :Buffers<CR>
 
-  " Toggle relative line number
-  nmap <C-l><C-l> :set invrelativenumber<CR>
+  " Fzf search among marks
+  nnoremap <C-m> :Marks<CR>
+
+  " Fzf search among marks
+  nnoremap <C-s> :Snippets<CR>
+
+  " Fix linter errors
+  nnoremap <silent> af :ALEFix<CR>
 
   " vim-test maps
   " In a test file runs the test nearest to the cursor, otherwise runs the last nearest test
@@ -295,11 +347,12 @@ let g:vim_json_conceal=0
   " Move between linting errors
   nnoremap ]r :ALENextWrap<CR>
   nnoremap [r :ALEPreviousWrap<CR>
-
-  " Move between files on GReview
   
   " Tagbar
-  nnoremap <F1> :TagbarToggle<CR>
+  "nnoremap <F1> :TagbarToggle<CR>
+  
+  " Ranger browser
+  nnoremap <F2> :Ranger<CR>
 
   " deoplete tab-complete
   inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
@@ -315,6 +368,12 @@ let g:vim_json_conceal=0
 
   " Add byebug line
   nnoremap <Leader>bye obyebug<Esc>
+
+  " Add pry line
+  nnoremap <Leader>pry obinding.pry<Esc>
+
+  " Remove all the opened buffers
+  nnoremap <Leader>cbf :%bd!<CR>
 
   nnoremap ; :
   nnoremap : ;

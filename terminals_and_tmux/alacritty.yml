@@ -1,48 +1,162 @@
 alt_send_esc: true
 
 font:
-  size: 12
+  size: 11
   normal:
     family: RobotoMono Nerd Font Mono
     style: Light
-
   # The bold font face
   bold:
     family: RobotoMono Nerd Font Mono
-    style: Bold
+    style: Regular
 
   # The italic font face
   italic:
     family: RobotoMono Nerd Font Mono
-    style: Light Italic
+    style: Italic
 
-# Colors (Monokai Dark)
+# Colors (Dracula)
+#colors:
+  ## Default colors
+  #primary:
+    #background: '0x282a36'
+    #foreground: '0xf8f8f2'
+
+  ## Normal colors
+  #normal:
+    #black:   '0x000000'
+    #red:     '0xff5555'
+    #green:   '0x50fa7b'
+    #yellow:  '0xf1fa8c'
+    #blue:    '0xcaa9fa'
+    #magenta: '0xff79c6'
+    #cyan:    '0x8be9fd'
+    #white:   '0xbfbfbf'
+
+  ## Bright colors
+  #bright:
+    #black:   '0x282a35'
+    #red:     '0xff6e67'
+    #green:   '0x5af78e'
+    #yellow:  '0xf4f99d'
+    #blue:    '0xcaa9fa'
+    #magenta: '0xff92d0'
+    #cyan:    '0x9aedfe'
+    #white:   '0xe6e6e6'
+
+# Colors (Molokai Dark)
+#colors:
+  ## Default colors
+  #primary:
+    #background: '#1B1D1E'
+    #foreground: '#F8F8F2'
+  ## Normal colors
+  #normal:
+    #black:   '#333333'
+    #red:     '#C4265E'
+    #green:   '#86B42B'
+    #yellow:  '#B3B42B'
+    #blue:    '#6A7EC8'
+    #magenta: '#8C6BC8'
+    #cyan:    '#56ADBC'
+    #white:   '#E3E3DD'
+  ## Bright colors
+  #bright:
+    #black:   '#666666'
+    #red:     '#F92672'
+    #green:   '#A6E22E'
+    #yellow:  '#E2E22E'
+    #blue:    '#819AFF'
+    #magenta: '#AE81FF'
+    #cyan:    '#66D9EF'
+    #white:   '#F8F8F2'
+
+# Colors (Iceberg Dark)
+#colors:
+  ## Default colors
+  #primary:
+    #background: '#161821'
+    #foreground: '#d2d4de'
+
+  ## Normal colors
+  #normal:
+    #black:   '#161821'
+    #red:     '#e27878'
+    #green:   '#b4be82'
+    #yellow:  '#e2a478'
+    #blue:    '#84a0c6'
+    #magenta: '#a093c7'
+    #cyan:    '#89b8c2'
+    #white:   '#c6c8d1'
+
+  ## Bright colors
+  #bright:
+    #black:   '#6b7089'
+    #red:     '#e98989'
+    #green:   '#c0ca8e'
+    #yellow:  '#e9b189'
+    #blue:    '#91acd1'
+    #magenta: '#ada0d3'
+    #cyan:    '#95c4ce'
+    #white:   '#d2d4de'
+
+# Colors (Solarized Light)
+# colors:
+  # # Default colors
+  # primary:
+    # background: '0xfdf6e3'
+    # foreground: '0x586e75'
+
+  # # Normal colors
+  # normal:
+    # black:   '0x073642'
+    # red:     '0xdc322f'
+    # green:   '0x859900'
+    # yellow:  '0xb58900'
+    # blue:    '0x268bd2'
+    # magenta: '0xd33682'
+    # cyan:    '0x2aa198'
+    # white:   '0xeee8d5'
+
+  # # Bright colors
+  # bright:
+    # black:   '0x002b36'
+    # red:     '0xcb4b16'
+    # green:   '0x586e75'
+    # yellow:  '0x657b83'
+    # blue:    '0x839496'
+    # magenta: '0x6c71c4'
+    # cyan:    '0x93a1a1'
+    # white:   '0xfdf6e3'
+
+# Colors (Solarized Dark)
 colors:
+  # Default colors
   primary:
-    background: '0x272822'
-    foreground: '0xF8F8F2'
+    background: '0x002b36'
+    foreground: '0x839496'
 
   # Normal colors
   normal:
-   black:   '0x272822'
-   red:     '0xF92672'
-   green:   '0xA6E22E'
-   yellow:  '0xF4BF75'
-   blue:    '0x66D9EF'
-   magenta: '0xAE81FF'
-   cyan:    '0xA1EFE4'
-   white:   '0xF8F8F2'
+    black:   '0x073642'
+    red:     '0xdc322f'
+    green:   '0x859900'
+    yellow:  '0xb58900'
+    blue:    '0x268bd2'
+    magenta: '0xd33682'
+    cyan:    '0x2aa198'
+    white:   '0xeee8d5'
 
   # Bright colors
   bright:
-   black:   '0x75715E'
-   red:     '0xF92672'
-   green:   '0xA6E22E'
-   yellow:  '0xF4BF75'
-   blue:    '0x66D9EF'
-   magenta: '0xAE81FF'
-   cyan:    '0xA1EFE4'
-   white:   '0xF9F8F5'
+    black:   '0x002b36'
+    red:     '0xcb4b16'
+    green:   '0x586e75'
+    yellow:  '0x657b83'
+    blue:    '0x839496'
+    magenta: '0x6c71c4'
+    cyan:    '0x93a1a1'
+    white:   '0xfdf6e3'
 
 key_bindings:
   - { key: A,         mods: Alt,       chars: "\x1ba"                       }

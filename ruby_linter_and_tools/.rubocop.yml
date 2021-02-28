@@ -1,0 +1,137 @@
+require:
+  - 'rubocop-rails'
+  - 'rubocop-rspec'
+  - 'rubocop-performance'
+
+AllCops:
+  TargetRubyVersion: 2.7
+  # all the included files/directories are either auto-generated or belong to 3rd-parties
+  NewCops: enable
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/*'
+    - 'vendor/*'
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/DefEndAlignment:
+  AutoCorrect: true
+
+Layout/EmptyLineBetweenDefs:
+  EmptyLineBetweenClassDefs: false
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+  AutoCorrect: true
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/LineLength:
+  Max: 90
+
+Lint/MissingSuper:
+  Enabled: false
+
+Lint/UselessAccessModifier:
+  ContextCreatingMethods:
+    - included
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'db/migrate/*.rb'
+
+Metrics/ClassLength:
+  Max: 125
+
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/*.rb'
+
+Metrics/ModuleLength:
+  Max: 125
+
+# disabled because there are methods, prefixed with have_, has_, etc.
+Naming/PredicateName:
+  Enabled: false
+
+# disabled because we have a lot of variables in specs that uses the format variable_n
+Naming/VariableNumber:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+RSpec/DescribeClass:
+  # request specs does not describe a controller
+  Exclude:
+    - 'spec/requests/**/*.rb'
+
+RSpec/ExampleLength:
+  Max: 8
+
+# disabled to simplify writing "before { expect(...).to receive(...) }
+RSpec/ExpectInHook:
+  Enabled: false
+
+# changed to single_statement to deal with one-line examples that don't fit into a
+# single line
+RSpec/ImplicitSubject:
+  EnforcedStyle: single_statement_only
+
+# disabled because we have many let variables used across multiple examples
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+# disabled in order to simplify "allow(...).to receive(...)
+RSpec/MessageSpies:
+  Enabled: false
+
+# disabled to simplify testing delegations
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyElse:
+  EnforcedStyle: empty
+
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+Style/MissingElse:
+  Enabled: true
+  EnforcedStyle: case
+
+Style/MixinGrouping:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  ()
+    '%i': ()
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': ()
+    '%W': ()
+    '%x': ()
+
+Style/SymbolArray:
+  MinSize: 3

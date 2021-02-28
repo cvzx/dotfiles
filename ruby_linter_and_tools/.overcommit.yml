@@ -18,22 +18,49 @@
 PreCommit:
   RuboCop:
     enabled: true
-    on_fail: warn
-    on_warn: pass
-#
+    problem_on_unmodified_line: ignore
+    on_warn: fail
+
+  ForbiddenBranches:
+    enabled: true
+    branch_patterns: ['master']
+
+  Fasterer:
+    enabled: true
+    exclude:
+      - 'vendor/**/*.rb'
+      - 'db/schema.rb'
+
   TrailingWhitespace:
     enabled: true
-#    exclude:
-#      - '**/db/structure.sql' # Ignore trailing whitespace in generated files
-#
-#PostCheckout:
-#  ALL: # Special hook name that customizes all hooks of this type
-#    quiet: true # Change all post-checkout hooks to only display output on failure
-#
-#  IndexTags:
-#    enabled: true # Generate a tags file with `ctags` each time HEAD changes
+    exclude:
+      - '**/db/structure.sql' # Ignore trailing whitespace in generated files
+
+PostCheckout:
+  ALL: # Special hook name that customizes all hooks of this type
+    quiet: true # Change all post-checkout hooks to only display output on failure
+
+  IndexTags:
+    enabled: true # Generate a tags file with `ctags` each time HEAD changes
+
 PrePush:
+  ForbiddenBranches:
+    enabled: true
+    branch_patterns: ['master']
+
+  RuboCop:
+    enabled: true
+    problem_on_unmodified_line: ignore
+    on_warn: fail
+
+  Fasterer:
+    enabled: true
+    exclude:
+      - 'vendor/**/*.rb'
+      - 'db/schema.rb'
+
   RSpec:
+    #enabled: false
     enabled: true
     command: ['bundle', 'exec', 'rspec', 'spec']
     on_warn: fail
