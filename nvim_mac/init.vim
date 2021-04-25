@@ -17,7 +17,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-dispatch'
 Plug 'farmergreg/vim-lastplace'
@@ -38,7 +38,7 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
-" Plug 'neoclide/coc-solargraph'
+Plug 'neoclide/coc-solargraph'
 " Plug 'pseewald/vim-anyfold'
 Plug 'hashivim/vim-terraform'
 Plug 'majutsushi/tagbar'
@@ -65,7 +65,9 @@ Plug 'cormacrelf/vim-colors-github'
 Plug 'altercation/vim-colors-solarized'
 Plug 'paramagicdev/vim-medic_chalk'
 Plug 'mhartington/oceanic-next'
+Plug 'sickill/vim-monokai'
 Plug 'mcmartelle/vim-monokai-bold'
+Plug 'phanviet/vim-monokai-pro'
 Plug 'adlawson/vim-sorcerer'
 
 " elixir
@@ -78,6 +80,7 @@ Plug 'adlawson/vim-sorcerer'
 " Plug 'mattreduce/vim-mix'
 
 " ruby
+Plug 'ecomba/vim-ruby-refactoring'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
 Plug 'vim-ruby/vim-ruby'
@@ -86,10 +89,9 @@ Plug 'nelstrom/vim-textobj-rubyblock'
 " Plug 'kchmck/vim-coffee-script'
 " Plug 'slim-template/vim-slim'
 " Plug 'tpope/vim-rake'
-" Plug 'ecomba/vim-ruby-refactoring'
 Plug 'jgdavey/vim-blockle'
 Plug 'thoughtbot/vim-rspec'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " coffee
 " Plug 'lukaszkorecki/coffeetags'
@@ -124,10 +126,12 @@ autocmd Filetype json let g:indentLine_enabled = 0
 " colorscheme onedark
 " colorscheme dracula
 " colorscheme molokai
+colorscheme monokai
 " colorscheme monokai-bold
+" colorscheme monokai_pro
 "colorscheme Tomorrow-Night-Eighties
 " colorscheme solarized8_high
-colorscheme solarized8
+" colorscheme solarized8
 "colorscheme solarized
 " colorscheme github
 " colorscheme medic_chalk
@@ -135,14 +139,15 @@ colorscheme solarized8
 " colorscheme sorcerer
 
 " LIGHT THEME
-set background=light
-let g:airline_theme='solarized'
-highlight ALEWarning ctermbg=lightgray guibg=lightgray
-highlight ALEError ctermbg=lightgray guibg=lightgray
+" set background=light
+" let g:airline_theme='solarized'
+" highlight ALEWarning ctermbg=lightgray guibg=lightgray
+" highlight ALEError ctermbg=lightgray guibg=lightgray
 
 " DARK THEME
 " set background=dark
 " let g:airline_theme='solarized_flood'
+let g:airline_theme='base16_monokai'
 " highlight ALEWarning ctermbg=gray guibg=darkslategray
 " highlight ALEError ctermbg=gray guibg=darkslategray
 " hi EasyMotionTarget guibg=none guifg=#ff2400
@@ -197,29 +202,28 @@ set lazyredraw
 "let g:workspace_session_directory = $HOME . '/.config/nvim/sessions/'
 
 " Required for operations modifying multiple buffers like rename.
-" set hidden
+set hidden
 
 " Coc settings
 let g:coc_global_extensions = ['coc-solargraph']
-
-" slime settings
-let g:slime_target = 'tmux'
 
 " netrw
 let g:netrw_fastbrowse = 0
 let g:netrw_liststyle = 3
 
+" slime settings
+let g:slime_target = 'tmux'
+
 " test runner settings
 let test#strategy = 'tslime'
 let test#elixir#runner = 'exunit'
-"let test#ruby#rspec#executable = 'bundle exec rspec'
+" let test#ruby#rspec#executable = 'bundle exec rspec'
 let test#ruby#rspec#executable = "bundle exec spring rspec"
 "let test#ruby#rspec#executable = 'docker-compose run gizmo rspec'
 
 "disabledb because of COC solargraph errors
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#auto_complete_delay = 200
+" let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({'enable_smart_case': 5, 'auto_complete_delay': 100})
 
 augroup elixir
   nnoremap <leader>r :! elixir %<cr>
@@ -293,8 +297,8 @@ let g:rooter_patterns = ['efile', '.git/']
 
 " tell tslime.vim to use the current session and current window,
 " this let's you avoid specifying this on every upstart of vim.
-"let g:tslime_always_current_session = 1
-"let g:tslime_always_current_window = 1
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window = 1
 
 let g:vim_json_conceal=0
 
@@ -322,20 +326,17 @@ let g:vim_json_conceal=0
   nnoremap <silent> af :ALEFix<CR>
 
   " vim-test maps
-  " In a test file runs the test nearest to the cursor, otherwise runs the last nearest test
+  " nnoremap <Leader>s :call SendToTmux('q; ')<CR> :TestNearest<CR>
+  " nnoremap <Leader>t :call SendToTmux('q; ')<CR> :TestFile<CR>
+  " nnoremap <Leader>a :call SendToTmux('q; ')<CR> :TestSuite<CR>
+  " nnoremap <Leader>l :call SendToTmux('q; ')<CR> :TestLast<CR>
+  " nnoremap <Leader>v :TestVisit<CR>
   nnoremap <Leader>s :TestNearest<CR>
-  " In a test file runs all tests in the current file, otherwise runs the last file tests.
   nnoremap <Leader>t :TestFile<CR>
-  " Runs the whole test suite (if the current file is a test file, runs that framework's test suite,
-  " otherwise determines the test framework from the last run test).
   nnoremap <Leader>a :TestSuite<CR>
-  " Runs the last test.
   nnoremap <Leader>l :TestLast<CR>
-  " Visits the test file from which you last run your tests
-  " (useful when you're trying to make a test pass, and you dive deep into application
-  " code and close your test buffer to make more space, and once you've made
-  " it pass you want to go back to the test file to write more tests).
   nnoremap <Leader>v :TestVisit<CR>
+  nnoremap <F1> :call SendToTmux('q')<CR>
 
   " go to normal node in terminal
   tnoremap <Esc> <C-\><C-n>
@@ -353,6 +354,7 @@ let g:vim_json_conceal=0
   
   " Ranger browser
   nnoremap <F2> :Ranger<CR>
+  nnoremap <F3> :GutentagsUpdate!<CR>
 
   " deoplete tab-complete
   inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
