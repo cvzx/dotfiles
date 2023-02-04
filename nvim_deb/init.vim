@@ -19,7 +19,12 @@ Plug 'tpope/vim-unimpaired'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'Shougo/pum.vim'
 Plug 'Shougo/ddc.vim'
+Plug 'Shougo/ddc-ui-native'
 Plug 'Shougo/ddc-around'
+Plug 'Shougo/ddc-source-rg'
+Plug 'LumaKernel/ddc-source-file'
+Plug 'matsui54/ddc-ultisnips'
+Plug 'matsui54/ddc-buffer'
 Plug 'Shougo/ddc-matcher_head'
 Plug 'Shougo/ddc-sorter_rank'
 Plug 'Shougo/ddc-nvim-lsp'
@@ -367,15 +372,6 @@ let g:vim_json_conceal=0
   " Fzf search among marks
   nnoremap <C-s> :Snippets<CR>
 
-  " Fix linter errors
-  nnoremap <silent> af :ALEFix<CR>
-
-  " vim-test maps
-  " nnoremap <Leader>s :call SendToTmux('q; ')<CR> :TestNearest<CR>
-  " nnoremap <Leader>t :call SendToTmux('q; ')<CR> :TestFile<CR>
-  " nnoremap <Leader>a :call SendToTmux('q; ')<CR> :TestSuite<CR>
-  " nnoremap <Leader>l :call SendToTmux('q; ')<CR> :TestLast<CR>
-  " nnoremap <Leader>v :TestVisit<CR>
   nnoremap <Leader>s :TestNearest<CR>
   nnoremap <Leader>t :TestFile<CR>
   nnoremap <Leader>a :TestSuite<CR>
@@ -389,22 +385,17 @@ let g:vim_json_conceal=0
   xmap ga <Plug>(EasyAlign)
   nmap ga <Plug>(EasyAlign)
 
-  " Move between linting errors
-  nnoremap ]r :ALENextWrap<CR>
-  nnoremap [r :ALEPreviousWrap<CR>
   
   " Ranger browser
   nnoremap <F1> :call SendToTmux('q')<CR>
-  " Here I tried to set up debugger but wasn't successfull
-  " nnoremap <S-F1> :call SendToTmux('rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 1234 -- ')<CR>
   nnoremap <F2> :Ranger<CR>
-  " Tagbar
-  nnoremap <F3> :Tagbar<CR>
 
   " deoplete tab-complete
   " inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-  call ddc#custom#patch_global('sources', ['around', 'nvim-lsp'])
+  call ddc#custom#patch_global('ui', 'native')
+  " file lsp
+  call ddc#custom#patch_global('sources', ['around', 'buffer', 'rg', 'file', 'nvim-lsp', 'ultisnips'])
 
   " Use matcher_head and sorter_rank.
   call ddc#custom#patch_global('sourceOptions', {
@@ -416,18 +407,30 @@ let g:vim_json_conceal=0
   " Change source options
   call ddc#custom#patch_global('sourceOptions', {
         \ 'around': {'mark': 'A'},
+        \ 'buffer': {'mark': 'B'},
+        \ 'file': {'mark': 'F', 'isVolatile': v:true, 'forceCompletionPattern': '\S/\S*'},
+        \ 'ultisnips': {'mark': 'US'},
+        \ 'rg': {'mark': 'rg', 'minAutoCompleteLength': 4},
         \ 'nvim-lsp': {'mark': 'lsp', 'forceCompletionPattern': '\.\w*|:\w*|->\w*'},
         \ })
   call ddc#custom#patch_global('sourceParams', {
-        \ 'around': {'maxSize': 50},
-        \ 'nvim-lsp': {'maxSize': 50},
+        \ 'around': {'maxSize': 10},
+        \ 'ultisnips': {'maxSize': 10},
+        \ 'rg': {'maxSize': 10},
+        \ 'nvim-lsp': {'maxSize': 10},
+        \ 'buffer': {
+        \   'maxSize': 10,
+        \   'requireSameFiletype': v:false,
+        \   'limitBytes': 5000000,
+        \   'fromAltBuf': v:true,
+        \   'forceCollect': v:true,
+        \ },
         \ })
 
-  inoremap <expr><tab> ddc#map#pum_visible() ? "\<c-n>" : "\<tab>"
+  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
   " <S-TAB>: completion back.
-  inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
-
+  inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
 
   " Use ddc.
   call ddc#enable()
