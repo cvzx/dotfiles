@@ -1,5 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
+
 Plug 'tpope/vim-fugitive'
+Plug 'AndrewRadev/diffurcate.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
@@ -15,15 +17,22 @@ Plug 'kana/vim-textobj-user'
 Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-unimpaired'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'Shougo/pum.vim'
+Plug 'Shougo/ddc.vim'
+Plug 'Shougo/ddc-around'
+Plug 'Shougo/ddc-matcher_head'
+Plug 'Shougo/ddc-sorter_rank'
+Plug 'Shougo/ddc-nvim-lsp'
+Plug 'vim-denops/denops.vim'
+Plug 'tani/ddc-fuzzy'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-dispatch'
 Plug 'farmergreg/vim-lastplace'
 Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
-Plug 'lukas-reineke/indent-blankline.nvim'
+" Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'airblade/vim-rooter'
@@ -38,7 +47,6 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
-Plug 'neoclide/coc-solargraph'
 " Plug 'pseewald/vim-anyfold'
 Plug 'hashivim/vim-terraform'
 Plug 'majutsushi/tagbar'
@@ -48,7 +56,11 @@ Plug 'tpope/vim-repeat'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-sensible'
-Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'jeetsukumaran/vim-indentwise'
+Plug 'wellle/targets.vim'
+Plug 'plasticboy/vim-markdown'
+Plug 'puremourning/vimspector'
+" Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'blueyed/vim-diminactive'
 " Plug 'codota/tabnine-vim'
 
@@ -69,6 +81,7 @@ Plug 'sickill/vim-monokai'
 Plug 'mcmartelle/vim-monokai-bold'
 Plug 'phanviet/vim-monokai-pro'
 Plug 'adlawson/vim-sorcerer'
+Plug 'erichdongubler/vim-sublime-monokai'
 
 " elixir
 " Plug 'mhinz/vim-mix-format'
@@ -80,7 +93,6 @@ Plug 'adlawson/vim-sorcerer'
 " Plug 'mattreduce/vim-mix'
 
 " ruby
-Plug 'ecomba/vim-ruby-refactoring'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
 Plug 'vim-ruby/vim-ruby'
@@ -91,21 +103,23 @@ Plug 'nelstrom/vim-textobj-rubyblock'
 " Plug 'tpope/vim-rake'
 Plug 'jgdavey/vim-blockle'
 Plug 'thoughtbot/vim-rspec'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ecomba/vim-ruby-refactoring'
 
 " Rust
 Plug 'rust-lang/rust.vim'
-Plug 'puremourning/vimspector'
 
 " coffee
 " Plug 'lukaszkorecki/coffeetags'
 
+" LSP
+Plug 'neovim/nvim-lspconfig'
+
 call plug#end()
 
 " mouse mode
-"set mouse=a
-
-" set _ as a word separator
+" "set mouse=a
+"
+"" set _ as a word separator
 "set iskeyword-=_
 
 " Leader key
@@ -120,6 +134,7 @@ set colorcolumn=90
 
 " Disable hiding quotes in json files
 autocmd Filetype json let g:indentLine_enabled = 0
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
 " colorschemes
 " colorscheme iceberg
@@ -129,34 +144,41 @@ autocmd Filetype json let g:indentLine_enabled = 0
 " colorscheme onedark
 " colorscheme dracula
 " colorscheme molokai
-colorscheme monokai
+
+" colorscheme monokai
+" colorscheme sublimemonokai
+
 " colorscheme monokai-bold
 " colorscheme monokai_pro
-"colorscheme Tomorrow-Night-Eighties
-" colorscheme solarized8_high
-" colorscheme solarized8
-"colorscheme solarized
-" colorscheme github
-" colorscheme medic_chalk
-"colorscheme OceanicNext
-" colorscheme sorcerer
+" colorscheme Tomorrow-Night-Eighties
 
-" LIGHT THEME
-" set background=light
-" let g:airline_theme='solarized'
-" highlight ALEWarning ctermbg=lightgray guibg=lightgray
-" highlight ALEError ctermbg=lightgray guibg=lightgray
+colorscheme solarized8_high
+
+ " colorscheme solarized8
+ " colorscheme solarized
+ " colorscheme github
+ " colorscheme medic_chalk
+ " colorscheme OceanicNext
+ " colorscheme sorcerer
+
+ " LIGHT THEME
+ set background=light
+ let g:airline_theme='solarized'
+ highlight ALEWarning ctermbg=lightgray guibg=lightgray
+ highlight ALEError ctermbg=lightgray guibg=lightgray
 
 " DARK THEME
 " set background=dark
-" let g:airline_theme='solarized_flood'
 " let g:airline_theme='base16_monokai'
+" let g:airline_theme='base16_nord'
+" let g:airline_theme='solarized_flood'"
+
 " highlight ALEWarning ctermbg=gray guibg=darkslategray
 " highlight ALEError ctermbg=gray guibg=darkslategray
 " hi EasyMotionTarget guibg=none guifg=#ff2400
 " hi EasyMotionShade guibg=none guifg=none
 " hi EasyMotionTarget2First guibg=none guifg=#ff2400
-" hi EasyMotionTarget2Second guibg=none guifg=#ff2400
+" hi EasyMotionTarget2Second guibg=none guifg=#ff2400"
 
 " airline settings
 "let g:airline#extensions#ale#enabled = 1
@@ -169,10 +191,6 @@ colorscheme monokai
 " set foldmethod=syntax
 " autocmd Filetype * AnyFoldActivate
 " set foldlevel=99
-
-" Rust syntax experimental options
-syntax enable
-filetype plugin indent on
 
 " indents
 set expandtab
@@ -196,7 +214,7 @@ set ttyfast
 set regexpengine=1
 set synmaxcol=100
 syntax sync minlines=100
-set lazyredraw
+" set lazyredraw
 "let ruby_operators = 1
 "set cursorline
 "syntax off
@@ -211,20 +229,6 @@ set lazyredraw
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
-" Vimspector
-let g:vimspector_enable_mappings = 'HUMAN'
-
-nmap <leader>dd :call vimspector#Launch()<CR>
-nmap <leader>dx :VimspectorReset<CR>
-nmap <leader>de :VimspectorEval
-nmap <leader>dw :VimspectorWatch
-nmap <leader>do :VimspectorShowOutput
-
-let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-go', 'CodeLLDB' ]
-
-" Coc settings
-let g:coc_global_extensions = ['coc-solargraph']
-
 " netrw
 let g:netrw_fastbrowse = 0
 let g:netrw_liststyle = 3
@@ -235,13 +239,11 @@ let g:slime_target = 'tmux'
 " test runner settings
 let test#strategy = 'tslime'
 let test#elixir#runner = 'exunit'
+" let test#ruby#rspec#executable = 'bundle exec spring rspec'
 " let test#ruby#rspec#executable = 'bundle exec rspec'
-let test#ruby#rspec#executable = "bundle exec spring rspec"
-"let test#ruby#rspec#executable = 'docker-compose run gizmo rspec'
-
-"disabledb because of COC solargraph errors
-" let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({'enable_smart_case': 5, 'auto_complete_delay': 100})
+" let test#ruby#rspec#executable = 'spring rspec'
+let test#ruby#rspec#executable = 'rspec'
+" let test#ruby#rspec#executable = 'docker compose run gizmo rspec'
 
 augroup elixir
   nnoremap <leader>r :! elixir %<cr>
@@ -252,10 +254,12 @@ augroup END<Paste>
 let g:ale_linters = {}
 let g:ale_linters.elixir = ['elixir-ls']
 let g:ale_linters.ruby = ['standardrb', 'rubocop']
+let g:ale_linters.rust = ['analyzer']
 
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
 let g:ale_fixers.elixir = ['mix_format']
 let g:ale_fixers.ruby = ['standardrb', 'rubocop']
+let g:ale_fixers.rust = ['rustfmt']
 "let g:ale_elixir_elixir_ls_release = '/home/hzyy/Projects/elixir_projects/elixir-ls/rel'
 "let g:ale_elixir_elixir_ls_release = '/Users/aleh.shapo/Projects/elixir-cw/elixir-ls/rel'
 
@@ -264,13 +268,21 @@ highlight ALEErrorSign ctermfg=red guifg=red
 let g:ale_sign_warning = '⚠'
 highlight ALEWarningSign ctermfg=blue guifg=blue
 
-let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 1
+let g:ale_sign_column_always = 0
+let g:ale_lint_on_text_changed = 0
 let g:ale_lint_delay = 300
-let g:ale_set_highlights = 1
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_enter = 1
+let g:ale_set_highlights = 0
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_enter = 0
 let g:ale_fix_on_save = 0
+
+" let g:ale_sign_column_always = 1
+" let g:ale_lint_on_text_changed = 1
+" let g:ale_lint_delay = 300
+" let g:ale_set_highlights = 1
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_enter = 1
+" let g:ale_fix_on_save = 0
 
 " close fzf finder via <esc>
 autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
@@ -278,8 +290,23 @@ autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
 " search highlighting
 set nohlsearch
 
-" tagbar
-let g:tagbar_type_ruby = { 'ctagstype': 'rspec', 'kinds': ['d:describes'], }
+" tagbar ruby settings
+" let g:tagbar_type_ruby = { 'ctagstype': 'rspec', 'kinds': ['d:describes'], }
+  if executable('ripper-tags')
+    let g:tagbar_type_ruby = {
+        \ 'kinds'      : ['m:modules',
+                        \ 'c:classes',
+                        \ 'C:constants',
+                        \ 'F:singleton methods',
+                        \ 'f:methods',
+                        \ 'a:aliases'],
+        \ 'kind2scope' : { 'c' : 'class',
+                         \ 'm' : 'class' },
+        \ 'scope2kind' : { 'class' : 'c' },
+        \ 'ctagsbin'   : 'ripper-tags',
+        \ 'ctagsargs'  : ['-f', '-']
+        \ }
+  endif
 
 " guten tags will use ripgrep -> ripgrep would respect our .gitignore
 let g:gutentags_file_list_command = 'rg --files'
@@ -354,7 +381,6 @@ let g:vim_json_conceal=0
   nnoremap <Leader>a :TestSuite<CR>
   nnoremap <Leader>l :TestLast<CR>
   nnoremap <Leader>v :TestVisit<CR>
-  nnoremap <F1> :call SendToTmux('q')<CR>
 
   " go to normal node in terminal
   tnoremap <Esc> <C-\><C-n>
@@ -367,15 +393,44 @@ let g:vim_json_conceal=0
   nnoremap ]r :ALENextWrap<CR>
   nnoremap [r :ALEPreviousWrap<CR>
   
-  " Tagbar
-  "nnoremap <F1> :TagbarToggle<CR>
-  
   " Ranger browser
+  nnoremap <F1> :call SendToTmux('q')<CR>
+  " Here I tried to set up debugger but wasn't successfull
+  " nnoremap <S-F1> :call SendToTmux('rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 1234 -- ')<CR>
   nnoremap <F2> :Ranger<CR>
-  nnoremap <F3> :GutentagsUpdate!<CR>
+  " Tagbar
+  nnoremap <F3> :Tagbar<CR>
 
   " deoplete tab-complete
-  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+  " inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+  call ddc#custom#patch_global('sources', ['around', 'nvim-lsp'])
+
+  " Use matcher_head and sorter_rank.
+  call ddc#custom#patch_global('sourceOptions', {
+      \ '_': {
+      \   'matchers': ['matcher_head'],
+      \   'sorters': ['sorter_rank']},
+      \ })
+
+  " Change source options
+  call ddc#custom#patch_global('sourceOptions', {
+        \ 'around': {'mark': 'A'},
+        \ 'nvim-lsp': {'mark': 'lsp', 'forceCompletionPattern': '\.\w*|:\w*|->\w*'},
+        \ })
+  call ddc#custom#patch_global('sourceParams', {
+        \ 'around': {'maxSize': 50},
+        \ 'nvim-lsp': {'maxSize': 50},
+        \ })
+
+  inoremap <expr><tab> ddc#map#pum_visible() ? "\<c-n>" : "\<tab>"
+
+  " <S-TAB>: completion back.
+  inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+
+
+  " Use ddc.
+  call ddc#enable()
 
   " Find word through the project via RipGrep
   nnoremap <Leader>rg :Rg <C-r>=expand("<cword>")<CR><CR>
@@ -392,23 +447,26 @@ let g:vim_json_conceal=0
   " Add pry line
   nnoremap <Leader>pry obinding.pry<Esc>
 
+  " Git blame
+  nnoremap <Leader>gb :Git blame<CR>
+  " Git vertical split with master for the same file
+  nnoremap <Leader>gvs :Gvsplit master:%<CR>
+
+  " Compare current file with its version on master
+  nnoremap <Leader>cmpm :Gvsplit master:%<CR>
+
   " Remove all the opened buffers
   nnoremap <Leader>cbf :%bd!<CR>
 
   nnoremap ; :
   nnoremap : ;
 
-  " COC bindings
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
   "tslime bindings
   vmap <C-c><C-c> <Plug>SendSelectionToTmux
   nmap <C-c><C-c> <Plug>NormalModeSendToTmux
   nmap <C-c>r <Plug>SetTmuxVars
 
+	" clipboard settings
   " toggle paste in cmd only
   nnoremap <Leader>n :set invpaste<CR>
   " cut to clipboard
@@ -420,7 +478,70 @@ let g:vim_json_conceal=0
   " select pasted text
   nnoremap <expr> gV    "`[".getregtype(v:register)[0]."`]"
 
+  " for wsl only
+	let g:clipboard = {
+	\   'name': 'win32yank-wsl',
+	\   'copy': {
+	\      '+': 'clip.exe',
+	\      '*': 'clip.exe',
+	\    },
+	\   'paste': {
+	\      '+': 'powershell.exe Get-Clipboard',
+	\      '*': 'powershell.exe Get-Clipboard',
+	\   },
+	\   'cache_enabled': 0,
+	\ }
+
   noremap <Up> <Nop>
   noremap <Down> <Nop>
   noremap <Left> <Nop>
   noremap <Right> <Nop>
+
+ " Custom functions
+ " function! DockerComposeTransform(cmd) abort
+   " call system("pwd | grep 'freddy'")
+   " if match(a:cmd, 'freddy') == -1 && v:shell_error == 0
+     " return substitute(a:cmd, 'bundle exec', 'docker compose exec freddy', '')
+   " else
+     " return a:cmd
+   " endif
+ " endfunction
+
+" let g:test#custom_transformations = {'docker_compose': function('DockerComposeTransform')}
+" let g:test#transformation = 'docker_compose'
+
+"LSP Settings
+
+lua << EOF
+
+local config = {
+  name = 'solargraph',
+  --cmd = { 'solargraph', 'stdio' },
+  cmd = vim.lsp.rpc.connect('0.0.0.0', 7658),
+  root_dir = vim.fs.dirname(vim.fs.find({'Gemfile', '.git'}, { upward = true })[1])
+}
+
+--vim.lsp.start(config)
+
+ vim.api.nvim_create_autocmd('FileType', {
+   pattern = 'ruby',
+   callback = function()
+     vim.lsp.start(config)
+   end,
+ })
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+
+    local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  end
+})
+
+EOF
