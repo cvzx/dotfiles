@@ -517,10 +517,16 @@ let g:vim_json_conceal=0
 
 lua << EOF
 
+-- resolve host of 'solar' docker container to ip address
+local handle = io.popen("getent hosts solar | awk '{ print $1 }'")
+local solagraph_container_ip = handle:read("*all"):sub(1, -2)
+handle:close()
+
 local config = {
   name = 'solargraph',
+  cmd = vim.lsp.rpc.connect(solagraph_container_ip, 7658),
   --cmd = { 'solargraph', 'stdio' },
-  cmd = vim.lsp.rpc.connect('0.0.0.0', 7658),
+  --cmd = vim.lsp.rpc.connect('0.0.0.0', 7658),
   root_dir = vim.fs.dirname(vim.fs.find({'Gemfile', '.git'}, { upward = true })[1])
 }
 
