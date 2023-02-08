@@ -524,7 +524,7 @@ handle:close()
 
 local config = {
   name = 'solargraph',
-  cmd = vim.lsp.rpc.connect(solagraph_container_ip, 7658),
+  --cmd = vim.lsp.rpc.connect(solagraph_container_ip, 7658),
   --cmd = { 'solargraph', 'stdio' },
   --cmd = vim.lsp.rpc.connect('0.0.0.0', 7658),
   root_dir = vim.fs.dirname(vim.fs.find({'Gemfile', '.git'}, { upward = true })[1])
@@ -532,12 +532,12 @@ local config = {
 
 --vim.lsp.start(config)
 
- vim.api.nvim_create_autocmd('FileType', {
-   pattern = 'ruby',
-   callback = function()
-     vim.lsp.start(config)
-   end,
- })
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = 'ruby',
+--   callback = function()
+--     vim.lsp.start(config)
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
