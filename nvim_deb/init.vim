@@ -27,16 +27,18 @@ Plug 'matsui54/ddc-ultisnips'
 Plug 'matsui54/ddc-buffer'
 Plug 'Shougo/ddc-matcher_head'
 Plug 'Shougo/ddc-sorter_rank'
-Plug 'Shougo/ddc-nvim-lsp'
+Plug 'Shougo/ddc-source-lsp'
+Plug 'Shougo/ddc-converter_remove_overlap'
 Plug 'vim-denops/denops.vim'
 Plug 'tani/ddc-fuzzy'
-Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
+Plug 'kassio/neoterm'
 Plug 'tpope/vim-dispatch'
 Plug 'farmergreg/vim-lastplace'
 Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
+" Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
@@ -45,6 +47,8 @@ Plug 'jgdavey/tslime.vim'
 Plug 'kylef/apiblueprint.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'easymotion/vim-easymotion'
 Plug 'andrewradev/splitjoin.vim'
 Plug 'xolox/vim-misc'
@@ -64,12 +68,15 @@ Plug 'tpope/vim-sensible'
 Plug 'jeetsukumaran/vim-indentwise'
 Plug 'wellle/targets.vim'
 Plug 'plasticboy/vim-markdown'
-Plug 'puremourning/vimspector'
+Plug 'vifm/vifm.vim'
+Plug 'jackmort/chatgpt.nvim'
 " Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'blueyed/vim-diminactive'
 " Plug 'codota/tabnine-vim'
+Plug 'RRethy/vim-illuminate'
 
 " colorschemes
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'morhetz/gruvbox'
 Plug 'joshdick/onedark.vim'
 Plug 'cocopon/iceberg.vim'
@@ -104,7 +111,7 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/ruby-matchit'
 Plug 'nelstrom/vim-textobj-rubyblock'
 " Plug 'kchmck/vim-coffee-script'
-" Plug 'slim-template/vim-slim'
+Plug 'slim-template/vim-slim'
 " Plug 'tpope/vim-rake'
 Plug 'jgdavey/vim-blockle'
 Plug 'thoughtbot/vim-rspec'
@@ -112,12 +119,18 @@ Plug 'ecomba/vim-ruby-refactoring'
 
 " Rust
 Plug 'rust-lang/rust.vim'
-
-" coffee
-" Plug 'lukaszkorecki/coffeetags'
+Plug 'simrat39/rust-tools.nvim'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'MunifTanjim/nui.nvim'
+
+"PlantUML
+Plug 'aklt/plantuml-syntax'
+Plug 'weirongxu/plantuml-previewer.vim'
 
 call plug#end()
 
@@ -136,57 +149,71 @@ let g:solarized_termcolors=256
 
 " set line length marker
 set colorcolumn=90
+" set colorcolumn=80
 
 " Disable hiding quotes in json files
 autocmd Filetype json let g:indentLine_enabled = 0
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+" let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_char_list = ['¦']
+" let g:indentLine_setColors = 0
+" let g:indentLine_defaultGroup = 'SpecialKey'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+" autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesOdd  guibg=none guifg=#32302f
+" autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesEven guibg=#363230 guifg=#363230
+" autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesOdd  guibg=none guifg=none
+" autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesEven guibg=#2d2b2a guifg=#2d2b2a
+" light
+" autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesOdd  guibg=none guifg=#f2e5bc
+" autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesEven guibg=#e7d9b0 guifg=#e7d9b0
+" hi IndentGuidesOdd guifg=#32302f ctermbg=black
+
 
 " colorschemes
+" colorscheme tokyonight
+" colorscheme tokyonight-night
+" colorscheme tokyonight-storm
+" colorscheme tokyonight-day
+" colorscheme tokyonight-moon
 " colorscheme iceberg
 " colorscheme nord
-" colorscheme gruvbox
 " colorscheme archery
 " colorscheme onedark
 " colorscheme dracula
 " colorscheme molokai
-
 " colorscheme monokai
 " colorscheme sublimemonokai
-
 " colorscheme monokai-bold
 " colorscheme monokai_pro
 " colorscheme Tomorrow-Night-Eighties
 
+" colorscheme gruvbox
+" let g:gruvbox_contrast_dark = 'soft'
+" let g:gruvbox_contrast_light = 'soft'
+
 colorscheme solarized8_high
 
- " colorscheme solarized8
- " colorscheme solarized
- " colorscheme github
- " colorscheme medic_chalk
- " colorscheme OceanicNext
- " colorscheme sorcerer
+" colorscheme solarized8
+" colorscheme solarized
+" colorscheme github
+" colorscheme medic_chalk
+" colorscheme OceanicNext
+" colorscheme sorcerer
 
  " LIGHT THEME
  set background=light
  let g:airline_theme='solarized'
- highlight ALEWarning ctermbg=lightgray guibg=lightgray
- highlight ALEError ctermbg=lightgray guibg=lightgray
 
 " DARK THEME
 " set background=dark
-" let g:airline_theme='base16_monokai'
-" let g:airline_theme='base16_nord'
-" let g:airline_theme='solarized_flood'"
+" let g:airline_theme='solarized_flood'
 
-" highlight ALEWarning ctermbg=gray guibg=darkslategray
-" highlight ALEError ctermbg=gray guibg=darkslategray
 " hi EasyMotionTarget guibg=none guifg=#ff2400
 " hi EasyMotionShade guibg=none guifg=none
 " hi EasyMotionTarget2First guibg=none guifg=#ff2400
 " hi EasyMotionTarget2Second guibg=none guifg=#ff2400"
 
 " airline settings
-"let g:airline#extensions#ale#enabled = 1
 "let g:airline#extensions#branch = '0'
 "let g:airline#extensions#fugitiveline = '0'
 "let g:airline_theme='github'
@@ -241,59 +268,37 @@ let g:netrw_liststyle = 3
 " slime settings
 let g:slime_target = 'tmux'
 
+" neoterm
+" let g:neoterm_default_mod='belowright' " open terminal in bottom split
+let g:neoterm_default_mod='vertical' " open terminal in bottom split
+" let g:neoterm_size=16 " terminal split size
+let g:neoterm_autoscroll=1 " scroll to the bottom when running a command
+nnoremap <leader>ll :<c-u>exec v:count.'Tclear'<cr>
+nnoremap <leader>z :Ttoggle<cr>
+nnoremap <leader><cr> :TREPLSendLine<cr> " send current line and move down
+vnoremap <leader><cr> :TREPLSendSelection<cr> " send current selection
+
 " test runner settings
 let test#strategy = 'tslime'
-let test#elixir#runner = 'exunit'
 " let test#ruby#rspec#executable = 'bundle exec spring rspec'
 " let test#ruby#rspec#executable = 'bundle exec rspec'
-" let test#ruby#rspec#executable = 'spring rspec'
-let test#ruby#rspec#executable = 'rspec'
-" let test#ruby#rspec#executable = 'docker compose run gizmo rspec'
+let test#ruby#rspec#executable = 'spring rspec'
+" let test#ruby#rspec#executable = 'rspec'
+" let test#ruby#rspec#executable = 'docker compose exec app rspec'
 
 augroup elixir
   nnoremap <leader>r :! elixir %<cr>
   autocmd FileType elixir nnoremap <c-]> :ALEGoToDefinition<cr>
 augroup END<Paste>
 
-" ALE settings
-let g:ale_linters = {}
-let g:ale_linters.elixir = ['elixir-ls']
-let g:ale_linters.ruby = ['standardrb', 'rubocop']
-let g:ale_linters.rust = ['analyzer']
-
-let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
-let g:ale_fixers.elixir = ['mix_format']
-let g:ale_fixers.ruby = ['standardrb', 'rubocop']
-let g:ale_fixers.rust = ['rustfmt']
-"let g:ale_elixir_elixir_ls_release = '/home/hzyy/Projects/elixir_projects/elixir-ls/rel'
-"let g:ale_elixir_elixir_ls_release = '/Users/aleh.shapo/Projects/elixir-cw/elixir-ls/rel'
-
-let g:ale_sign_error = '✘'
-highlight ALEErrorSign ctermfg=red guifg=red
-let g:ale_sign_warning = '⚠'
-highlight ALEWarningSign ctermfg=blue guifg=blue
-
-let g:ale_sign_column_always = 0
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_delay = 300
-let g:ale_set_highlights = 0
-let g:ale_lint_on_save = 0
-let g:ale_lint_on_enter = 0
-let g:ale_fix_on_save = 0
-
-" let g:ale_sign_column_always = 1
-" let g:ale_lint_on_text_changed = 1
-" let g:ale_lint_delay = 300
-" let g:ale_set_highlights = 1
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_enter = 1
-" let g:ale_fix_on_save = 0
-
 " close fzf finder via <esc>
 autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
 
 " search highlighting
 set nohlsearch
+
+" plantuml
+let g:preview_uml_url='http://localhost:8080'
 
 " tagbar ruby settings
 " let g:tagbar_type_ruby = { 'ctagstype': 'rspec', 'kinds': ['d:describes'], }
@@ -329,7 +334,7 @@ let g:UltiSnipsExpandTrigger="<C-l>"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 let g:UltiSnipsListSnippets="<C-;>"
-"let g:UltiSnipsSnippetsDir="/Users/aleh.shapo/.config/nvim/plugged/vim-snippets/snippets"
+
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
@@ -389,13 +394,12 @@ let g:vim_json_conceal=0
   " Ranger browser
   nnoremap <F1> :call SendToTmux('q')<CR>
   nnoremap <F2> :Ranger<CR>
-
-  " deoplete tab-complete
-  " inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+  nnoremap <F3> :TagbarOpenAutoClose<CR>
+  nnoremap <Leader><F3> :TagbarToggle<CR>
 
   call ddc#custom#patch_global('ui', 'native')
   " file lsp
-  call ddc#custom#patch_global('sources', ['around', 'buffer', 'rg', 'file', 'nvim-lsp', 'ultisnips'])
+  call ddc#custom#patch_global('sources', ['around', 'buffer', 'rg', 'file', 'lsp'])
 
   " Use matcher_head and sorter_rank.
   call ddc#custom#patch_global('sourceOptions', {
@@ -406,18 +410,20 @@ let g:vim_json_conceal=0
 
   " Change source options
   call ddc#custom#patch_global('sourceOptions', {
-        \ 'around': {'mark': 'A'},
-        \ 'buffer': {'mark': 'B'},
-        \ 'file': {'mark': 'F', 'isVolatile': v:true, 'forceCompletionPattern': '\S/\S*'},
-        \ 'ultisnips': {'mark': 'US'},
-        \ 'rg': {'mark': 'rg', 'minAutoCompleteLength': 4},
-        \ 'nvim-lsp': {'mark': 'lsp', 'forceCompletionPattern': '\.\w*|:\w*|->\w*'},
+        \ 'around': { 'mark': 'A'},
+        \ 'buffer': { 'mark': 'B'},
+        \ 'file':   { 'mark': 'F', 'isVolatile': v:true, 'forceCompletionPattern': '\S/\S*'},
+        \ 'rg':     { 'mark': 'rg', 'minAutoCompleteLength': 4},
+        \ 'lsp':    { 'mark': 'LSP', 'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
         \ })
+
   call ddc#custom#patch_global('sourceParams', {
         \ 'around': {'maxSize': 10},
-        \ 'ultisnips': {'maxSize': 10},
-        \ 'rg': {'maxSize': 10},
-        \ 'nvim-lsp': {'maxSize': 10},
+        \ 'rg':     {'maxSize': 10},
+        \ 'lsp':    {
+        \     'enableResolveItem': v:true,
+        \     'enableAdditionalTextEdit': v:true,
+        \  },
         \ 'buffer': {
         \   'maxSize': 10,
         \   'requireSameFiletype': v:false,
@@ -481,63 +487,61 @@ let g:vim_json_conceal=0
   " select pasted text
   nnoremap <expr> gV    "`[".getregtype(v:register)[0]."`]"
 
-  " for wsl only
-	let g:clipboard = {
-	\   'name': 'win32yank-wsl',
-	\   'copy': {
-	\      '+': 'clip.exe',
-	\      '*': 'clip.exe',
-	\    },
-	\   'paste': {
-	\      '+': 'powershell.exe Get-Clipboard',
-	\      '*': 'powershell.exe Get-Clipboard',
-	\   },
-	\   'cache_enabled': 0,
-	\ }
-
   noremap <Up> <Nop>
   noremap <Down> <Nop>
   noremap <Left> <Nop>
   noremap <Right> <Nop>
 
- " Custom functions
- " function! DockerComposeTransform(cmd) abort
-   " call system("pwd | grep 'freddy'")
-   " if match(a:cmd, 'freddy') == -1 && v:shell_error == 0
-     " return substitute(a:cmd, 'bundle exec', 'docker compose exec freddy', '')
-   " else
-     " return a:cmd
-   " endif
- " endfunction
+" Vimspector
+" let g:vimspector_enable_mappings = 'HUMAN'
 
-" let g:test#custom_transformations = {'docker_compose': function('DockerComposeTransform')}
-" let g:test#transformation = 'docker_compose'
-
-"LSP Settings
+" Rust
+let g:rustfmt_autosave = 1
 
 lua << EOF
 
--- resolve host of 'solar' docker container to ip address
-local handle = io.popen("getent hosts solar | awk '{ print $1 }'")
-local solagraph_container_ip = handle:read("*all"):sub(1, -2)
-handle:close()
+vim.diagnostic.config({
+    virtual_text     = true,
+    signs            = false,
+    update_in_insert = true,
+    underline        = true,
+    severity_sort    = false,
+})
 
-local config = {
+vim.cmd([[
+set signcolumn=yes
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+]])
+
+local config_ruby = {
   name = 'solargraph',
-  --cmd = vim.lsp.rpc.connect(solagraph_container_ip, 7658),
-  --cmd = { 'solargraph', 'stdio' },
-  --cmd = vim.lsp.rpc.connect('0.0.0.0', 7658),
-  root_dir = vim.fs.dirname(vim.fs.find({'Gemfile', '.git'}, { upward = true })[1])
+  cmd = { 'solargraph', 'stdio' },
+  root_dir = vim.fs.dirname(vim.fs.find({'Gemfile', '.git'}, { upward = true })[1]),
+  autostart = true
+}
+
+local config_python = {
+    name = 'pyright',
+    cmd = { 'pyright-langserver', '--stdio' },
+    root_dir = vim.fs.dirname(vim.fs.find({'app.py', '.git'}, { upward = true })[1]),
+    autostart = true
 }
 
 --vim.lsp.start(config)
 
--- vim.api.nvim_create_autocmd('FileType', {
---   pattern = 'ruby',
---   callback = function()
---     vim.lsp.start(config)
---   end,
--- })
+ vim.api.nvim_create_autocmd('FileType', {
+   pattern = 'ruby',
+   callback = function()
+     vim.lsp.start(config_ruby)
+   end,
+ })
+
+ vim.api.nvim_create_autocmd('FileType', {
+   pattern = 'python',
+   callback = function()
+     vim.lsp.start(config_python)
+   end,
+ })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
@@ -551,6 +555,44 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   end
+})
+
+--local null_ls = require("null-ls")
+--
+--null_ls.setup({
+--    sources = {
+--      null_ls.builtins.diagnostics.rubocop,
+--      null_ls.builtins.diagnostics.flake8,
+--      null_ls.builtins.formatting.black,
+--      null_ls.builtins.formatting.isort, 
+--    },
+--})
+
+-- Define a keybinding for triggering rubocop autofix if the current file
+vim.api.nvim_set_keymap('n', '<Leader>af', ':!rubocop -a -f quiet --stderr %<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>pf', ':lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+
+
+-- terminal
+
+local api = vim.api
+api.nvim_command("autocmd TermOpen * startinsert")             -- starts in insert mode
+api.nvim_command("autocmd TermOpen * setlocal nonumber")       -- no numbers
+api.nvim_command("autocmd TermEnter * setlocal signcolumn=no") -- no sign column
+
+
+-- Rust
+local rt = require("rust-tools")
+
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<Leader>d", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
 })
 
 EOF
