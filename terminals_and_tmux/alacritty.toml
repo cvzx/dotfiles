@@ -1,0 +1,27 @@
+import = ["~/.config/alacritty/dracula.toml"]
+
+[font]
+size = 10.5
+
+[font.bold]
+family = "FiraCode Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "FiraCode Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font Mono"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Shift|Control"
+
+[window]
+decorations = "Full"
+startup_mode = "Maximized"
+padding = { x = 5, y = 5 }
+opacity = 0.85
