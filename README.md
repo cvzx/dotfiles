@@ -37,3 +37,13 @@ Move alacritty.yml to ~/.config/alacritty/*
 ### bashrc
 Move .bashrc to ~/
 
+### For Arch/KDE
+yay -S alacritty tmux deno fd xclip python-pynvim ripgrep rust-analyzer keepassxc
+    nvidia-inst kio-gdrive ksysguard
+
+nvidia-inst --prime
+
+// install fzf via git
+// install libinput-gestures (for X11)
+// install oh my zsh
+// install rvm

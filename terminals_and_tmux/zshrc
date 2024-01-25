@@ -9,11 +9,11 @@ export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # Run ssh-agent automatically for all login shells
-if [ -x /usr/bin/keychain ]; then
-  eval $(keychain --eval --agents ssh)
-else
-  eval $(ssh-agent -s)
-fi
+# if [ -x /usr/bin/keychain ]; then
+  # eval $(keychain --eval --agents ssh)
+# else
+  # eval $(ssh-agent -s)
+# fi
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -99,7 +99,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source "/etc/profile.d/rvm.sh"
+# source "/etc/profile.d/rvm.sh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -128,16 +128,12 @@ source "/etc/profile.d/rvm.sh"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh
-alias app="cd ~/Projects/work/quipuapp"
-alias infra="cd ~/Projects/work/quipu-infrastructure"
-alias front="cd ~/Projects/work/quipuapp-front"
-alias dump="cd ~/Projects/work/dumps/quipuapp"
-alias mlr="cd ~/Projects/work/ml_reconciliation_service"
-alias rust="cd ~/Projects/my/rust"
-
-alias dia="cd ~/Projects/work/diagrams"
-alias dwb="dce web bash"
+alias rust="cd ~/projects/my/rust"
+alias dia="cd ~/projects/work/diagrams"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
