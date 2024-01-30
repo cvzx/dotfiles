@@ -40,8 +40,13 @@ Move .bashrc to ~/
 ### For Arch/KDE
 yay -S alacritty tmux deno fd xclip python-pynvim ripgrep rust-analyzer keepassxc
     nvidia-inst kio-gdrive ksysguard
+yay -S ttf-ibm-plex ttf-firacode-nerd
 
-nvidia-inst --prime
+yay -S nvidia-535xx-dkms nvidia-535xx-utils
+yay -S nvidia-settings
+
+panel height = 70
+inline clock font size 32
 
 // install fzf via git
 // install libinput-gestures (for X11)
