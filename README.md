@@ -45,8 +45,14 @@ yay -S ttf-ibm-plex ttf-firacode-nerd
 yay -S nvidia-535xx-dkms nvidia-535xx-utils
 yay -S nvidia-settings
 
+// For plasma
 panel height = 70
 inline clock font size 32
+
+// For i3
+// Scaling ui
+in ~/.Xresources
+Xft.dpi: 192
 
 // install fzf via git
 // install libinput-gestures (for X11)
