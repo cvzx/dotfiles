@@ -1,5 +1,19 @@
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'rktjmp/lush.nvim'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'puremourning/vimspector'
+Plug 'danilamihailov/beacon.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+" Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+
 Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/diffurcate.vim'
 Plug 'vim-airline/vim-airline'
@@ -13,24 +27,24 @@ Plug 'junegunn/fzf.vim'
 Plug 'burntsushi/ripgrep'
 Plug 'tpope/vim-endwise'
 Plug 'terryma/vim-expand-region'
-Plug 'kana/vim-textobj-user'
+" Plug 'kana/vim-textobj-user'
 Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-unimpaired'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'Shougo/pum.vim'
-Plug 'Shougo/ddc.vim'
-Plug 'Shougo/ddc-ui-native'
-Plug 'Shougo/ddc-around'
-Plug 'Shougo/ddc-source-rg'
-Plug 'LumaKernel/ddc-source-file'
-Plug 'matsui54/ddc-ultisnips'
-Plug 'matsui54/ddc-buffer'
-Plug 'Shougo/ddc-matcher_head'
-Plug 'Shougo/ddc-sorter_rank'
-Plug 'Shougo/ddc-source-lsp'
-Plug 'Shougo/ddc-converter_remove_overlap'
-Plug 'vim-denops/denops.vim'
-Plug 'tani/ddc-fuzzy'
+" Plug 'Shougo/pum.vim'
+" Plug 'Shougo/ddc.vim'
+" Plug 'Shougo/ddc-ui-native'
+" Plug 'Shougo/ddc-around'
+" Plug 'Shougo/ddc-source-rg'
+" Plug 'LumaKernel/ddc-source-file'
+" Plug 'matsui54/ddc-ultisnips'
+" Plug 'matsui54/ddc-buffer'
+" Plug 'Shougo/ddc-matcher_head'
+" Plug 'Shougo/ddc-sorter_rank'
+" Plug 'Shougo/ddc-source-lsp'
+" Plug 'Shougo/ddc-converter_remove_overlap'
+" Plug 'vim-denops/denops.vim'
+" Plug 'tani/ddc-fuzzy'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'kassio/neoterm'
@@ -47,12 +61,10 @@ Plug 'jgdavey/tslime.vim'
 Plug 'kylef/apiblueprint.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'easymotion/vim-easymotion'
 Plug 'andrewradev/splitjoin.vim'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-colorscheme-switcher'
+" Plug 'xolox/vim-colorscheme-switcher'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
@@ -73,9 +85,11 @@ Plug 'jackmort/chatgpt.nvim'
 " Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'blueyed/vim-diminactive'
 " Plug 'codota/tabnine-vim'
-Plug 'RRethy/vim-illuminate'
+" Plug 'RRethy/vim-illuminate'
 
 " colorschemes
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+Plug 'fabius/molokai.nvim'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'morhetz/gruvbox'
 Plug 'joshdick/onedark.vim'
@@ -109,10 +123,10 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/ruby-matchit'
-Plug 'nelstrom/vim-textobj-rubyblock'
+" Plug 'nelstrom/vim-textobj-rubyblock'
 " Plug 'kchmck/vim-coffee-script'
 Plug 'slim-template/vim-slim'
-" Plug 'tpope/vim-rake'
+Plug 'tpope/vim-rake'
 Plug 'jgdavey/vim-blockle'
 Plug 'thoughtbot/vim-rspec'
 Plug 'ecomba/vim-ruby-refactoring'
@@ -148,7 +162,7 @@ set t_Co=256
 let g:solarized_termcolors=256
 
 " set line length marker
-set colorcolumn=90
+set colorcolumn=100
 " set colorcolumn=80
 
 " Disable hiding quotes in json files
@@ -180,7 +194,16 @@ let g:indent_guides_auto_colors = 0
 " colorscheme archery
 " colorscheme onedark
 " colorscheme dracula
+"
+" colorscheme catppuccin
+" colorscheme catppuccin-latte
+" colorscheme catppuccin-frappe
+colorscheme catppuccin-macchiato
+" colorscheme catppuccin-mocha
+
+" colorscheme molokai-light
 " colorscheme molokai
+
 " colorscheme monokai
 " colorscheme sublimemonokai
 " colorscheme monokai-bold
@@ -191,7 +214,7 @@ let g:indent_guides_auto_colors = 0
 " let g:gruvbox_contrast_dark = 'soft'
 " let g:gruvbox_contrast_light = 'soft'
 
-colorscheme solarized8_high
+" colorscheme solarized8_high
 
 " colorscheme solarized8
 " colorscheme solarized
@@ -201,12 +224,12 @@ colorscheme solarized8_high
 " colorscheme sorcerer
 
  " LIGHT THEME
- set background=light
- let g:airline_theme='solarized'
+ " set background=light
+ " let g:airline_theme='solarized'
 
 " DARK THEME
-" set background=dark
-" let g:airline_theme='solarized_flood'
+set background=dark
+let g:airline_theme='solarized_flood'
 
 " hi EasyMotionTarget guibg=none guifg=#ff2400
 " hi EasyMotionShade guibg=none guifg=none
@@ -248,7 +271,7 @@ set synmaxcol=100
 syntax sync minlines=100
 " set lazyredraw
 "let ruby_operators = 1
-"set cursorline
+set cursorline
 "syntax off
 
 "sessions
@@ -260,6 +283,10 @@ syntax sync minlines=100
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
+
+" telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 
 " netrw
 let g:netrw_fastbrowse = 0
@@ -282,8 +309,8 @@ vnoremap <leader><cr> :TREPLSendSelection<cr> " send current selection
 let test#strategy = 'tslime'
 " let test#ruby#rspec#executable = 'bundle exec spring rspec'
 " let test#ruby#rspec#executable = 'bundle exec rspec'
-let test#ruby#rspec#executable = 'spring rspec'
-" let test#ruby#rspec#executable = 'rspec'
+" let test#ruby#rspec#executable = 'spring rspec'
+let test#ruby#rspec#executable = 'rspec'
 " let test#ruby#rspec#executable = 'docker compose exec app rspec'
 
 augroup elixir
@@ -397,49 +424,49 @@ let g:vim_json_conceal=0
   nnoremap <F3> :TagbarOpenAutoClose<CR>
   nnoremap <Leader><F3> :TagbarToggle<CR>
 
-  call ddc#custom#patch_global('ui', 'native')
-  " file lsp
-  call ddc#custom#patch_global('sources', ['around', 'buffer', 'rg', 'file', 'lsp'])
+  " call ddc#custom#patch_global('ui', 'native')
+  " " file lsp
+  " call ddc#custom#patch_global('sources', ['around', 'buffer', 'rg', 'file', 'lsp'])
 
-  " Use matcher_head and sorter_rank.
-  call ddc#custom#patch_global('sourceOptions', {
-      \ '_': {
-      \   'matchers': ['matcher_head'],
-      \   'sorters': ['sorter_rank']},
-      \ })
+  " " Use matcher_head and sorter_rank.
+  " call ddc#custom#patch_global('sourceOptions', {
+      " \ '_': {
+      " \   'matchers': ['matcher_head'],
+      " \   'sorters': ['sorter_rank']},
+      " \ })
 
-  " Change source options
-  call ddc#custom#patch_global('sourceOptions', {
-        \ 'around': { 'mark': 'A'},
-        \ 'buffer': { 'mark': 'B'},
-        \ 'file':   { 'mark': 'F', 'isVolatile': v:true, 'forceCompletionPattern': '\S/\S*'},
-        \ 'rg':     { 'mark': 'rg', 'minAutoCompleteLength': 4},
-        \ 'lsp':    { 'mark': 'LSP', 'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
-        \ })
+  " " Change source options
+  " call ddc#custom#patch_global('sourceOptions', {
+        " \ 'around': { 'mark': 'A'},
+        " \ 'buffer': { 'mark': 'B'},
+        " \ 'file':   { 'mark': 'F', 'isVolatile': v:true, 'forceCompletionPattern': '\S/\S*'},
+        " \ 'rg':     { 'mark': 'rg', 'minAutoCompleteLength': 4},
+        " \ 'lsp':    { 'mark': 'LSP', 'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
+        " \ })
 
-  call ddc#custom#patch_global('sourceParams', {
-        \ 'around': {'maxSize': 10},
-        \ 'rg':     {'maxSize': 10},
-        \ 'lsp':    {
-        \     'enableResolveItem': v:true,
-        \     'enableAdditionalTextEdit': v:true,
-        \  },
-        \ 'buffer': {
-        \   'maxSize': 10,
-        \   'requireSameFiletype': v:false,
-        \   'limitBytes': 5000000,
-        \   'fromAltBuf': v:true,
-        \   'forceCollect': v:true,
-        \ },
-        \ })
+  " call ddc#custom#patch_global('sourceParams', {
+        " \ 'around': {'maxSize': 10},
+        " \ 'rg':     {'maxSize': 10},
+        " \ 'lsp':    {
+        " \     'enableResolveItem': v:true,
+        " \     'enableAdditionalTextEdit': v:true,
+        " \  },
+        " \ 'buffer': {
+        " \   'maxSize': 10,
+        " \   'requireSameFiletype': v:false,
+        " \   'limitBytes': 5000000,
+        " \   'fromAltBuf': v:true,
+        " \   'forceCollect': v:true,
+        " \ },
+        " \ })
 
-  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+  " inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-  " <S-TAB>: completion back.
-  inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
+  " " <S-TAB>: completion back.
+  " inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
 
   " Use ddc.
-  call ddc#enable()
+  " call ddc#enable()
 
   " Find word through the project via RipGrep
   nnoremap <Leader>rg :Rg <C-r>=expand("<cword>")<CR><CR>
@@ -449,6 +476,9 @@ let g:vim_json_conceal=0
 
   " Resize window width to 96
   nnoremap <Leader>ww :vertical resize 96<CR>
+
+  " Add debugger line
+  nnoremap <Leader>deb odebugger<Esc>
 
   " Add byebug line
   nnoremap <Leader>bye obyebug<Esc>
@@ -493,7 +523,10 @@ let g:vim_json_conceal=0
   noremap <Right> <Nop>
 
 " Vimspector
-" let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_sidebar_width = 85
+let g:vimspector_bottombar_height = 15
+let g:vimspector_terminal_maxwidth = 70
 
 " Rust
 let g:rustfmt_autosave = 1
@@ -595,4 +628,109 @@ rt.setup({
   },
 })
 
+-- cmp
+local cmp = require("cmp")
+cmp.setup({
+  -- Enable LSP snippets
+  snippet = {
+    expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-S-f>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    -- ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
+  },
+  -- Installed sources:
+  sources = {
+    { name = 'path', keyword_length = 2 },                              -- file paths
+    { name = 'nvim_lsp', keyword_length = 3, max_item_count = 10 },      -- from language server
+    { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
+    { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
+    { name = 'buffer', keyword_length = 2 },        -- source current buffer
+    { name = 'vsnip', keyword_length = 2 },         -- nvim-cmp source for vim-vsnip 
+    { name = 'calc'},                               -- source for math calculation
+  },
+  window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+  },
+  formatting = {
+      fields = {'menu', 'abbr', 'kind'},
+      format = function(entry, item)
+          local menu_icon ={
+              nvim_lsp = 'λ',
+              vsnip = '⋗',
+              buffer = 'Ω',
+              path = '🖫',
+          }
+          item.menu = menu_icon[entry.source.name]
+          return item
+      end,
+  },
+})
+
+EOF
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "rust", "ruby", "lua", "vim", "vimdoc", "query" },
+  highlight = { enable = true },
+  endwise = { enable = true },
+  indent = { enable = false },
+
+  textobjects = {
+    select = {
+      enable = true,
+
+      -- Automatically jump forward to textobj, similar to targets.vim
+      lookahead = true,
+
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        -- You can optionally set descriptions to the mappings (used in the desc parameter of
+        -- nvim_buf_set_keymap) which plugins like which-key display
+        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+        -- You can also use captures from other query groups like `locals.scm`
+        ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+      },
+      -- You can choose the select mode (default is charwise 'v')
+      --
+      -- Can also be a function which gets passed a table with the keys
+      -- * query_string: eg '@function.inner'
+      -- * method: eg 'v' or 'o'
+      -- and should return the mode ('v', 'V', or '<c-v>') or a table
+      -- mapping query_strings to modes.
+      selection_modes = {
+        ['@parameter.outer'] = 'v', -- charwise
+        ['@function.outer'] = 'V', -- linewise
+        ['@class.outer'] = '<c-v>', -- blockwise
+      },
+      -- If you set this to `true` (default is `false`) then any textobject is
+      -- extended to include preceding or succeeding whitespace. Succeeding
+      -- whitespace has priority in order to act similarly to eg the built-in
+      -- `ap`.
+      --
+      -- Can also be a function which gets passed a table with the keys
+      -- * query_string: eg '@function.inner'
+      -- * selection_mode: eg 'v'
+      -- and should return true of false
+      include_surrounding_whitespace = true,
+    },
+  },
+}
 EOF
