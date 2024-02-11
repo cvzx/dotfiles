@@ -24,14 +24,14 @@ exec_always xrandr --output eDP-1 --mode 3840x2400
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex --autostart --environment i3
+exec_always --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec_always --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # Background
 exec_always --no-startup-id feh --bg-fill ~/Pictures/4K\ No\ Logo\ G321.png
@@ -39,6 +39,7 @@ exec_always --no-startup-id feh --bg-fill ~/Pictures/4K\ No\ Logo\ G321.png
 exec_always --no-startup-id xinput set-prop "VEN_04F3:00 04F3:311C Touchpad" "libinput Tapping Enabled" 1
 exec_always --no-startup-id xinput set-prop "VEN_04F3:00 04F3:311C Touchpad" "libinput Natural Scrolling Enabled" 1
 exec_always --no-startup-id xinput set-prop "VEN_04F3:00 04F3:311C Touchpad" "libinput Accel Speed" 0.40
+
 exec_always --no-startup-id setxkbmap -option caps:escape
 
 # Layouts
@@ -178,16 +179,16 @@ bindsym Control+9 workspace number $ws9
 bindsym Control+0 workspace number $ws10
 
 # move focused container to workspace
-bindsym Control+Alt+1 move container to workspace number $ws1
-bindsym Control+Alt+2 move container to workspace number $ws2
-bindsym Control+Alt+3 move container to workspace number $ws3
-bindsym Control+Alt+4 move container to workspace number $ws4
-bindsym Control+Alt+5 move container to workspace number $ws5
-bindsym Control+Alt+6 move container to workspace number $ws6
-bindsym Control+Alt+7 move container to workspace number $ws7
-bindsym Control+Alt+8 move container to workspace number $ws8
-bindsym Control+Alt+9 move container to workspace number $ws9
-bindsym Control+Alt+0 move container to workspace number $ws10
+bindsym Control+Mod1+1 move container to workspace number $ws1
+bindsym Control+Mod1+2 move container to workspace number $ws2
+bindsym Control+Mod1+3 move container to workspace number $ws3
+bindsym Control+Mod1+4 move container to workspace number $ws4
+bindsym Control+Mod1+5 move container to workspace number $ws5
+bindsym Control+Mod1+6 move container to workspace number $ws6
+bindsym Control+Mod1+7 move container to workspace number $ws7
+bindsym Control+Mod1+8 move container to workspace number $ws8
+bindsym Control+Mod1+9 move container to workspace number $ws9
+bindsym Control+Mod1+0 move container to workspace number $ws10
 
 # Media player controls
 # bindsym XF86AudioPlay $exec playerctl play-pause
