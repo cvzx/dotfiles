@@ -40,10 +40,13 @@ exec_always --no-startup-id xinput set-prop "VEN_04F3:00 04F3:311C Touchpad" "li
 exec_always --no-startup-id xinput set-prop "VEN_04F3:00 04F3:311C Touchpad" "libinput Natural Scrolling Enabled" 1
 exec_always --no-startup-id xinput set-prop "VEN_04F3:00 04F3:311C Touchpad" "libinput Accel Speed" 0.40
 
-exec_always --no-startup-id setxkbmap -option caps:escape
 
-# Layouts
-exec_always --no-startup-id setxkbmap -layout us,ru -option 'grp:win_space_toggle'
+# Layouts and bindings
+exec_always --no-startup-id setxkbmap -layout us,ru -option 'caps:escape,grp:win_space_toggle'
+exec_always --no-startup-id xset r rate 250 50
+
+# Start touchpad gestures
+exec_always --no-startup-id libinput-gestures-setup start
 
 # Polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
@@ -71,11 +74,9 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
 
 # Increase brightness
-bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 # Decrease brightness
-bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
-
-
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
