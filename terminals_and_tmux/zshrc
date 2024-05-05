@@ -4,6 +4,16 @@ export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+RES=$(grep Xft.dpi ~/.Xresources | grep -Eo '[0-9]+')
+if ((RES > 100)) ; then
+  export GDK_SCALE=2
+  # export GDK_DPI_SCALE=0.5
+  export QT_SCALE_FACTOR=2
+else
+  export GDK_SCALE=1
+  export GDK_DPI_SCALE=1
+fi
+
 # Path to deno
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
@@ -99,6 +109,8 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+eval "$(rbenv init - zsh)"
 # source "/etc/profile.d/rvm.sh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -111,11 +123,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"

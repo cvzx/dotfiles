@@ -23,8 +23,11 @@ Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdcommenter'
 Plug 'janko/vim-test'
 Plug '~/.fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'burntsushi/ripgrep'
+" Plug 'junegunn/fzf.vim'
+Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
+" optional for icon support
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-endwise'
 Plug 'terryma/vim-expand-region'
 " Plug 'kana/vim-textobj-user'
@@ -318,9 +321,6 @@ augroup elixir
   autocmd FileType elixir nnoremap <c-]> :ALEGoToDefinition<cr>
 augroup END<Paste>
 
-" close fzf finder via <esc>
-autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
-
 " search highlighting
 set nohlsearch
 
@@ -393,16 +393,19 @@ let g:vim_json_conceal=0
   " fzf file fuzzy search that respects .gitignore
   " If in git directory, show only files that are committed, staged, or unstaged
   " else use regular :Files
-  nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
-
+  " nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
   " Fzf search among buffers
-  nnoremap <C-b> :Buffers<CR>
-
+  " nnoremap <C-b> :Buffers<CR>
   " Fzf search among marks
-  nnoremap <C-m> :Marks<CR>
-
+  " nnoremap <C-m> :Marks<CR>
   " Fzf search among marks
-  nnoremap <C-s> :Snippets<CR>
+  " nnoremap <C-s> :Snippets<CR>
+" close fzf finder via <esc>
+  " autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
+
+  nnoremap <c-P> <cmd>lua require('fzf-lua').files()<CR>
+  nnoremap <c-B> <cmd>lua require('fzf-lua').buffers()<CR>
+  nnoremap <c-Q> <cmd>lua require('fzf-lua').quickfix()<CR>
 
   nnoremap <Leader>s :TestNearest<CR>
   nnoremap <Leader>t :TestFile<CR>
