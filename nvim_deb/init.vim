@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'rktjmp/lush.nvim'
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'puremourning/vimspector'
 Plug 'danilamihailov/beacon.nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -144,10 +143,22 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'MunifTanjim/nui.nvim'
+Plug 'mfussenegger/nvim-lint'
 
 "PlantUML
 Plug 'aklt/plantuml-syntax'
 Plug 'weirongxu/plantuml-previewer.vim'
+
+"Copilot
+Plug 'github/copilot.vim'
+
+"Debugging
+" Plug 'puremourning/vimspector'
+Plug 'mfussenegger/nvim-dap'
+Plug 'leoluz/nvim-dap-go'
+Plug 'suketa/nvim-dap-ruby'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
 
 call plug#end()
 
@@ -175,7 +186,7 @@ let g:indentLine_char_list = ['¦']
 " let g:indentLine_setColors = 0
 " let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 0
+let g:indent_guides_auto_colors = 1
 " autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesOdd  guibg=none guifg=#32302f
 " autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesEven guibg=#363230 guifg=#363230
 " autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesOdd  guibg=none guifg=none
@@ -183,8 +194,8 @@ let g:indent_guides_auto_colors = 0
 " light
 " autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesOdd  guibg=none guifg=#f2e5bc
 " autocmd VimEnter,Colorscheme gruvbox :hi IndentGuidesEven guibg=#e7d9b0 guifg=#e7d9b0
-" hi IndentGuidesOdd guifg=#32302f ctermbg=black
-
+" hi IndentGuidesOdd guibg=none guifg=#f2e5bc
+" hi IndentGuidesEven guibg=#e7d9b0 guifg=#e7d9b0
 
 " colorschemes
 " colorscheme tokyonight
@@ -201,8 +212,8 @@ let g:indent_guides_auto_colors = 0
 " colorscheme catppuccin
 " colorscheme catppuccin-latte
 " colorscheme catppuccin-frappe
-colorscheme catppuccin-macchiato
-" colorscheme catppuccin-mocha
+" colorscheme catppuccin-macchiato
+colorscheme catppuccin-mocha
 
 " colorscheme molokai-light
 " colorscheme molokai
@@ -308,12 +319,14 @@ nnoremap <leader>z :Ttoggle<cr>
 nnoremap <leader><cr> :TREPLSendLine<cr> " send current line and move down
 vnoremap <leader><cr> :TREPLSendSelection<cr> " send current selection
 
+let g:ruby_host_prog = '~/.rbenv/versions/3.2.4/bin/neovim-ruby-host'
+
 " test runner settings
 let test#strategy = 'tslime'
 " let test#ruby#rspec#executable = 'bundle exec spring rspec'
 " let test#ruby#rspec#executable = 'bundle exec rspec'
-" let test#ruby#rspec#executable = 'spring rspec'
-let test#ruby#rspec#executable = 'rspec'
+let test#ruby#rspec#executable = 'spring rspec'
+" let test#ruby#rspec#executable = 'rspec'
 " let test#ruby#rspec#executable = 'docker compose exec app rspec'
 
 augroup elixir
@@ -526,10 +539,10 @@ let g:vim_json_conceal=0
   noremap <Right> <Nop>
 
 " Vimspector
-let g:vimspector_enable_mappings = 'HUMAN'
-let g:vimspector_sidebar_width = 85
-let g:vimspector_bottombar_height = 15
-let g:vimspector_terminal_maxwidth = 70
+" let g:vimspector_enable_mappings = 'HUMAN'
+" let g:vimspector_sidebar_width = 85
+" let g:vimspector_bottombar_height = 15
+" let g:vimspector_terminal_maxwidth = 70
 
 " Rust
 let g:rustfmt_autosave = 1
@@ -563,6 +576,13 @@ local config_python = {
     autostart = true
 }
 
+local config_go = {
+  name = 'gopls',
+  cmd = { 'gopls', 'serve' },
+  root_dir = vim.fs.dirname(vim.fs.find({'go.mod', '.git'}, { upward = true })[1]),
+  autostart = true
+}
+
 --vim.lsp.start(config)
 
  vim.api.nvim_create_autocmd('FileType', {
@@ -579,6 +599,13 @@ local config_python = {
    end,
  })
 
+ vim.api.nvim_create_autocmd('FileType', {
+   pattern = 'go',
+   callback = function()
+     vim.lsp.start(config_go)
+   end,
+ })
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
 
@@ -590,31 +617,88 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
   end
 })
 
---local null_ls = require("null-ls")
---
---null_ls.setup({
---    sources = {
---      null_ls.builtins.diagnostics.rubocop,
---      null_ls.builtins.diagnostics.flake8,
---      null_ls.builtins.formatting.black,
---      null_ls.builtins.formatting.isort, 
---    },
---})
+-- Golang
+local dap, dapui = require('dap'), require('dapui')
+local dapgo = require('dap-go')
+local dapruby =  require('dap-ruby')
+
+
+dapui.setup({
+  layouts = {
+    {
+      elements = {
+        'scopes'
+      },
+      size = 0.25,
+      position = 'bottom'
+    }
+  }
+})
+
+dapgo.setup()
+dapruby.setup()
+
+dap.listeners.before.attach.dapui_config = function()
+ dapui.open()
+end
+
+dap.listeners.before.launch.dapui_config = function()
+ dapui.open()
+end
+
+dap.listeners.before.event_terminated.dapui_config = function()
+ dapui.close()
+end
+
+dap.listeners.before.event_exited.dapui_config = function()
+ dapui.close()
+end
+
+vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
+vim.keymap.set('n', '<F3>', function() require('dap').terminate() end)
+vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
+vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
+vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
+vim.keymap.set('n', '<Leader>q', function()
+require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>Q', function() require('dap').set_breakpoint()
+end)
+vim.keymap.set('n', '<Leader>lp', function()
+require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
+end)
+vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
+vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
+
+vim.keymap.set('n', '<Leader>w', function() dapui.open() end)
+vim.keymap.set('n', '<Leader>W', function() dapui.close() end)
+
+require('lint').linters_by_ft = {
+  go = {'staticcheck'},
+}
+
+-- Automatically format Go files before saving
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    vim.lsp.buf.format({ timeout_ms = 1000 })
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.go",
+  callback = function()
+    require('lint').try_lint()
+  end,
+})
 
 -- Define a keybinding for triggering rubocop autofix if the current file
 vim.api.nvim_set_keymap('n', '<Leader>af', ':!rubocop -a -f quiet --stderr %<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>pf', ':lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
-
-
--- terminal
-
-local api = vim.api
-api.nvim_command("autocmd TermOpen * startinsert")             -- starts in insert mode
-api.nvim_command("autocmd TermOpen * setlocal nonumber")       -- no numbers
-api.nvim_command("autocmd TermEnter * setlocal signcolumn=no") -- no sign column
 
 
 -- Rust
@@ -632,63 +716,63 @@ rt.setup({
 })
 
 -- cmp
-local cmp = require("cmp")
-cmp.setup({
-  -- Enable LSP snippets
-  snippet = {
-    expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- Add tab support
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-    ['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<C-S-f>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    -- ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    })
-  },
-  -- Installed sources:
-  sources = {
-    { name = 'path', keyword_length = 2 },                              -- file paths
-    { name = 'nvim_lsp', keyword_length = 3, max_item_count = 10 },      -- from language server
-    { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
-    { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
-    { name = 'buffer', keyword_length = 2 },        -- source current buffer
-    { name = 'vsnip', keyword_length = 2 },         -- nvim-cmp source for vim-vsnip 
-    { name = 'calc'},                               -- source for math calculation
-  },
-  window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-  },
-  formatting = {
-      fields = {'menu', 'abbr', 'kind'},
-      format = function(entry, item)
-          local menu_icon ={
-              nvim_lsp = 'λ',
-              vsnip = '⋗',
-              buffer = 'Ω',
-              path = '🖫',
-          }
-          item.menu = menu_icon[entry.source.name]
-          return item
-      end,
-  },
-})
+-- local cmp = require("cmp")
+-- cmp.setup({
+--   -- Enable LSP snippets
+--   snippet = {
+--     expand = function(args)
+--         vim.fn["vsnip#anonymous"](args.body)
+--     end,
+--   },
+--   mapping = {
+--     ['<C-p>'] = cmp.mapping.select_prev_item(),
+--     ['<C-n>'] = cmp.mapping.select_next_item(),
+--     -- Add tab support
+--     ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+--     ['<Tab>'] = cmp.mapping.select_next_item(),
+--     ['<C-S-f>'] = cmp.mapping.scroll_docs(-4),
+--     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+--     -- ['<C-Space>'] = cmp.mapping.complete(),
+--     ['<C-e>'] = cmp.mapping.close(),
+--     ['<CR>'] = cmp.mapping.confirm({
+--       behavior = cmp.ConfirmBehavior.Insert,
+--       select = true,
+--     })
+--   },
+--   -- Installed sources:
+--   sources = {
+--     { name = 'path', keyword_length = 2 },                              -- file paths
+--     { name = 'nvim_lsp', keyword_length = 3, max_item_count = 10 },      -- from language server
+--     { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
+--     { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
+--     { name = 'buffer', keyword_length = 2 },        -- source current buffer
+--     { name = 'vsnip', keyword_length = 2 },         -- nvim-cmp source for vim-vsnip 
+--     { name = 'calc'},                               -- source for math calculation
+--   },
+--   window = {
+--       completion = cmp.config.window.bordered(),
+--       documentation = cmp.config.window.bordered(),
+--   },
+--   formatting = {
+--       fields = {'menu', 'abbr', 'kind'},
+--       format = function(entry, item)
+--           local menu_icon ={
+--               nvim_lsp = 'λ',
+--               vsnip = '⋗',
+--               buffer = 'Ω',
+--               path = '🖫',
+--           }
+--           item.menu = menu_icon[entry.source.name]
+--           return item
+--       end,
+--   },
+-- })
 
 EOF
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "rust", "ruby", "lua", "vim", "vimdoc", "query" },
+  ensure_installed = { "rust", "ruby", "go", "lua", "vim", "vimdoc", "query" },
   highlight = { enable = true },
   endwise = { enable = true },
   indent = { enable = false },
