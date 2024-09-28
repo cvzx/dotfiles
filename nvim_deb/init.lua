@@ -14,6 +14,136 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "github/copilot.vim" },            -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" },         -- for curl, log wrapper
+      -- { "nvim-telescope/telescope.nvim" }, -- Use telescope for help actions
+    },
+    opts = {
+      debug = true, -- Enable debugging
+      show_help = true, -- Show help actions
+      window = {
+        layout = "float",
+      },
+      auto_follow_cursor = false,    -- Don't follow the cursor after getting response
+    },
+    config = function(_, opts)
+      local chat = require("CopilotChat")
+      local select = require("CopilotChat.select")
+      -- Use unnamed register for the selection
+      opts.selection = select.unnamed
+
+      chat.setup(opts)
+
+      vim.api.nvim_create_user_command("CopilotChatVisual", function(args)
+        chat.ask(args.args, { selection = select.visual })
+      end, { nargs = "*", range = true })
+
+      -- Inline chat with Copilot
+      vim.api.nvim_create_user_command("CopilotChatInline", function(args)
+        chat.ask(args.args, {
+          selection = select.visual,
+          window = {
+            layout = "float",
+            relative = "cursor",
+            width = 1,
+            height = 0.4,
+            row = 1,
+          },
+        })
+      end, { nargs = "*", range = true })
+
+      -- Restore CopilotChatBuffer
+      vim.api.nvim_create_user_command("CopilotChatBuffer", function(args)
+        chat.ask(args.args, { selection = select.buffer })
+      end, { nargs = "*", range = true })
+    end,
+    event = "VeryLazy",
+    keys = {
+      -- Show help actions with telescope
+      {
+        "<leader>cch",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+        end,
+        desc = "CopilotChat - Help actions",
+      },
+      -- Show prompts actions with telescope
+      {
+        "<leader>ccp",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+        end,
+        desc = "CopilotChat - Prompt actions",
+      },
+      -- Code related commands
+      { "<leader>cce", "<cmd>CopilotChatExplain<cr>",       desc = "CopilotChat - Explain code" },
+      { "<leader>cct", "<cmd>CopilotChatTests<cr>",         desc = "CopilotChat - Generate tests" },
+      { "<leader>ccr", "<cmd>CopilotChatReview<cr>",        desc = "CopilotChat - Review code" },
+      { "<leader>ccR", "<cmd>CopilotChatRefactor<cr>",      desc = "CopilotChat - Refactor code" },
+      { "<leader>ccn", "<cmd>CopilotChatBetterNamings<cr>", desc = "CopilotChat - Better Naming" },
+      -- Chat with Copilot in visual mode
+      {
+        "<leader>ccv",
+        ":CopilotChatVisual",
+        mode = "x",
+        desc = "CopilotChat - Open in vertical split",
+      },
+      {
+        "<leader>ccx",
+        ":CopilotChatInline<cr>",
+        mode = "x",
+        desc = "CopilotChat - Inline chat",
+      },
+      -- Custom input for CopilotChat
+      {
+        "<leader>cci",
+        function()
+          local input = vim.fn.input("Ask Copilot: ")
+          if input ~= "" then
+            vim.cmd("CopilotChat " .. input)
+          end
+        end,
+        desc = "CopilotChat - Ask input",
+      },
+      -- Generate commit message based on the git diff
+      {
+        "<leader>ccm",
+        "<cmd>CopilotChatCommit<cr>",
+        desc = "CopilotChat - Generate commit message for all changes",
+      },
+      {
+        "<leader>ccM",
+        "<cmd>CopilotChatCommitStaged<cr>",
+        desc = "CopilotChat - Generate commit message for staged changes",
+      },
+      -- Quick chat with Copilot
+      {
+        "<leader>ccq",
+        function()
+          local input = vim.fn.input("Quick Chat: ")
+          if input ~= "" then
+            vim.cmd("CopilotChatBuffer " .. input)
+          end
+        end,
+        desc = "CopilotChat - Quick chat",
+      },
+      -- Debug
+      { "<leader>ccd", "<cmd>CopilotChatDebugInfo<cr>",     desc = "CopilotChat - Debug Info" },
+      -- Fix the issue with diagnostic
+      { "<leader>ccf", "<cmd>CopilotChatFixDiagnostic<cr>", desc = "CopilotChat - Fix Diagnostic" },
+      -- Clear buffer and chat history
+      { "<leader>ccl", "<cmd>CopilotChatReset<cr>",         desc = "CopilotChat - Clear buffer and chat history" },
+      -- Toggle Copilot Chat Vsplit
+      { "<leader>ccv", "<cmd>CopilotChatToggle<cr>",        desc = "CopilotChat - Toggle Vsplit" },
+    },
+  },
+"github/copilot.vim",
 "rktjmp/lush.nvim",
 "nvim-treesitter/nvim-treesitter-textobjects",
 { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
@@ -116,6 +246,7 @@ require("lazy").setup({
 "suketa/nvim-dap-ruby",
 "nvim-neotest/nvim-nio",
 "rcarriga/nvim-dap-ui",
+"fatih/vim-go",
 })
 
 -- Leader key
@@ -124,6 +255,7 @@ vim.o.hlsearch = false
 vim.o.termguicolors = true
 
 -- -- set line length marker
+vim.cmd('set colorcolumn=90')
 -- -- vim.o.colorcolumn = 100
 
 vim.g.indentLine_char_list = '|'
@@ -166,7 +298,8 @@ vim.g.slime_target = "tmux"
 
 -- test runner settings
 vim.g["test#strategy"] = "tslime"
-vim.g["test#ruby#rspec#executable"] = "spring rspec"
+-- vim.g["test#ruby#rspec#executable"] = "spring rspec"
+vim.g["test#ruby#rspec#executable"] = "rspec"
 --
 -- tags
 vim.g.gutentags_file_list_command = 'rg --files'
@@ -222,12 +355,15 @@ vim.keymap.set('n', '<Leader>n', ':set invpaste<CR>', {noremap = true, silent = 
 vim.keymap.set('v', '<C-x>', '"+d', {noremap = true, silent = true})
 vim.keymap.set('v', '<C-c>', '"+y', {noremap = true, silent = true})
 vim.keymap.set('i', '<C-v>', '<ESC>"+pa', {noremap = true, silent = true})
-vim.keymap.set('n', 'gV', function() return '`['..vim.fn.getregtype(vim.v.register)[1]..'`]`' end, {expr = true, noremap = true})
 vim.keymap.set('', '<Up>', '<Nop>', {noremap = true})
 vim.keymap.set('', '<Down>', '<Nop>', {noremap = true})
 vim.keymap.set('', '<Left>', '<Nop>', {noremap = true})
 vim.keymap.set('', '<Right>', '<Nop>', {noremap = true})
 
+-- disable copilot suggestion by default
+vim.g.copilot_filetypes = {["*"] = false}
+
+vim.cmd('nnoremap <expr> gV    "`[".getregtype(v:register)[0]."`]"')
 
 local ls = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -245,19 +381,6 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 
 local lspconfig = require('lspconfig')
-
--- vim.diagnostic.config({
---   virtual_text     = true,
---   signs            = true,
---   update_in_insert = true,
---   underline        = false,
---   severity_sort    = false,
--- })
---
--- vim.cmd([[
---   set signcolumn=yes
---   autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
--- ]])
 
 lspconfig.solargraph.setup({
   init_options = { formatting = true },
@@ -288,7 +411,6 @@ lspconfig.solargraph.setup({
 vim.api.nvim_set_keymap('n', '<Leader>af', ':!rubocop -a -f quiet --stderr %<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>pf', ':lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 
-
 lspconfig.rust_analyzer.setup({
     on_attach = function(_, bufnr)
       local bufopts = { noremap=true, silent=true, buffer=bufnr }
@@ -307,6 +429,7 @@ lspconfig.rust_analyzer.setup({
 lspconfig.gopls.setup({
     on_attach = function(_, bufnr)
       local bufopts = { noremap=true, silent=true, buffer=bufnr }
+
       vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -320,6 +443,24 @@ lspconfig.gopls.setup({
     cmd       = { "gopls" },
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
     root_dir  = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+      gopls = {
+        completeUnimported = true,
+        usePlaceholders = true,
+        staticcheck = true,
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+        analyses = {
+          unusedparams = true,
+        },
+      },
+    },
     single_file_support = true,
 })
 
@@ -427,7 +568,6 @@ local dap, dapui = require('dap'), require('dapui')
 local dapgo = require('dap-go')
 local dapruby =  require('dap-ruby')
 
-
 dapui.setup({
   layouts = {
     {
@@ -492,15 +632,25 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 -- Rust
-local rt = require("rust-tools")
+local rust_tools = require("rust-tools")
 
-rt.setup({
+rust_tools.setup({
   server = {
     on_attach = function(_, bufnr)
+      vim.keymap.set("n", "<Leader>a", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+      vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+      vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+      vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
+      vim.keymap.set('v', 'ga', vim.lsp.buf.code_action, bufopts)
+      vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
       -- Hover actions
-      vim.keymap.set("n", "<Leader>d", rt.hover_actions.hover_actions, { buffer = bufnr })
+      vim.keymap.set("n", "<Leader>d", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
       -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
     end,
   },
 })
