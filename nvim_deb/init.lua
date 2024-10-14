@@ -230,10 +230,21 @@ require("lazy").setup({
 "thoughtbot/vim-rspec",
 "ecomba/vim-ruby-refactoring",
 "rust-lang/rust.vim",
-"simrat39/rust-tools.nvim",
+-- "simrat39/rust-tools.nvim",
+{
+  'mrcjkb/rustaceanvim',
+  version = '^5', -- Recommended
+  lazy = false, -- This plugin is already lazy
+},
+-- {
+-- 	"chrisgrieser/nvim-lsp-endhints",
+-- 	event = "LspAttach",
+-- 	opts = {}, -- required, even if empty
+-- },
 "neovim/nvim-lspconfig",
 "williamboman/mason-lspconfig.nvim",
 "williamboman/mason.nvim",
+"jay-babu/mason-nvim-dap.nvim",
 "nvim-lua/plenary.nvim",
 "nvim-telescope/telescope.nvim",
 "jose-elias-alvarez/null-ls.nvim",
@@ -411,23 +422,8 @@ lspconfig.solargraph.setup({
 vim.api.nvim_set_keymap('n', '<Leader>af', ':!rubocop -a -f quiet --stderr %<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>pf', ':lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 
-lspconfig.rust_analyzer.setup({
-    on_attach = function(_, bufnr)
-      local bufopts = { noremap=true, silent=true, buffer=bufnr }
-      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-      vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-      vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-      vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
-      vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
-    end,
-})
-
 lspconfig.gopls.setup({
-    on_attach = function(_, bufnr)
+    on_attach = function(client, bufnr)
       local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
       vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
@@ -439,6 +435,10 @@ lspconfig.gopls.setup({
       vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
       vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
       vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
+
+      -- if client.server_capabilities.inlayHintProvider then
+	      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      -- end
     end,
     cmd       = { "gopls" },
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
@@ -563,10 +563,16 @@ cmp.setup({
   },
 })
 
--- Golang
+-- DAP
 local dap, dapui = require('dap'), require('dapui')
 local dapgo = require('dap-go')
 local dapruby =  require('dap-ruby')
+
+require("mason-nvim-dap").setup({
+  ensure_installed = { "codelldb" },
+  automatic_installation = true,
+  handlers = {},
+})
 
 dapui.setup({
   layouts = {
@@ -632,12 +638,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 -- Rust
-local rust_tools = require("rust-tools")
-
-rust_tools.setup({
+vim.g.rustaceanvim = {
+  tools = {
+  },
   server = {
-    on_attach = function(_, bufnr)
-      vim.keymap.set("n", "<Leader>a", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+    autostart = true,
+    on_attach = function(client, bufnr)
+      local bufopts = { noremap=true, silent=true, buffer=bufnr }
       vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -646,11 +653,46 @@ rust_tools.setup({
       vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
       vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
       vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
-      vim.keymap.set('v', 'ga', vim.lsp.buf.code_action, bufopts)
       vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
-      -- Hover actions
-      vim.keymap.set("n", "<Leader>d", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
+
+      if client.server_capabilities.inlayHintProvider then
+	      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      end
     end,
+    settings = {
+      ['rust-analyzer'] = {
+        diagnostics = {
+          experimental = true,
+        },
+      	inlayHints = {
+          chainingHints = true,
+          parameterHints = true,
+          typeHints = true,
+          maxLength = nil, -- or set a number
+          parameterHintsPrefix = "<- ",
+          otherHintsPrefix = "=> ",
+          rightAlign = false,
+          rightAlignPadding = 7,
+          highlight = "Comment",
+	},
+      },
+    },
   },
-})
+  dap = {
+  },
+}
+
+-- require("lsp-endhints").setup {
+-- 	icons = {
+-- 		type = "󰜁 ",
+-- 		parameter = "󰏪 ",
+-- 		offspec = " ", -- hint kind not defined in official LSP spec
+-- 		unknown = " ", -- hint kind is nil
+-- 	},
+-- 	label = {
+-- 		padding = 1,
+-- 		marginLeft = 0,
+-- 		bracketedParameters = true,
+-- 	},
+-- 	autoEnableHints = true,
+-- }
