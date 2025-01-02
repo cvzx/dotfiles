@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       { "github/copilot.vim" },            -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" },         -- for curl, log wrapper
@@ -83,6 +83,7 @@ require("lazy").setup({
       },
       -- Code related commands
       { "<leader>cce", "<cmd>CopilotChatExplain<cr>",       desc = "CopilotChat - Explain code" },
+      { "<leader>cco", "<cmd>CopilotChatOptimize<cr>",       desc = "CopilotChat - Optimize code" },
       { "<leader>cct", "<cmd>CopilotChatTests<cr>",         desc = "CopilotChat - Generate tests" },
       { "<leader>ccr", "<cmd>CopilotChatReview<cr>",        desc = "CopilotChat - Review code" },
       { "<leader>ccR", "<cmd>CopilotChatRefactor<cr>",      desc = "CopilotChat - Refactor code" },
@@ -119,7 +120,7 @@ require("lazy").setup({
       },
       {
         "<leader>ccM",
-        "<cmd>CopilotChatCommitStaged<cr>",
+        "<cmd>CopilotChatCommit<cr>",
         desc = "CopilotChat - Generate commit message for staged changes",
       },
       -- Quick chat with Copilot
@@ -371,6 +372,7 @@ vim.keymap.set('', '<Down>', '<Nop>', {noremap = true})
 vim.keymap.set('', '<Left>', '<Nop>', {noremap = true})
 vim.keymap.set('', '<Right>', '<Nop>', {noremap = true})
 
+
 -- disable copilot suggestion by default
 vim.g.copilot_filetypes = {["*"] = false}
 
@@ -379,6 +381,7 @@ vim.cmd('nnoremap <expr> gV    "`[".getregtype(v:register)[0]."`]"')
 local ls = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 
+vim.keymap.set({"n"}, "<leader>h", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, {silent = true})
 vim.keymap.set({"i"}, "<C-L>", function() ls.expand() end, {silent = true})
 vim.keymap.set({"i", "s"}, "<C-K>", function() ls.jump( 1) end, {silent = true})
 vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
@@ -574,13 +577,53 @@ require("mason-nvim-dap").setup({
   handlers = {},
 })
 
+local default_executable = vim.fn.getcwd() .. '/../target/debug/epg_pipeline'
+local default_args = { "https://epg-prod.titan.wurl.com/titan_amogonetworx_artflix_1_gb_cf.json" }
+
+dap.configurations.rust = {
+  {
+    name = "Launch epg_pipeline with Defaults",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      -- Use the default executable, allow override
+      local default_path = default_executable
+      local input = vim.fn.input('Path to executable: ', default_path, 'file')
+      return input ~= '' and input or default_path
+    end,
+    args = function()
+      -- Use default arguments, allow override
+      local input = vim.fn.input('Arguments (space-separated): ')
+      if input ~= '' then
+        return vim.split(input, ' ')
+      else
+        return default_args
+      end
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+}
+
+-- dap.configurations.rust_default = {
+--   {
+--     name = "Launch epg_pipeline with Predefined Args",
+--     type = "codelldb",
+--     request = "launch",
+--     program = default_executable,
+--     args = default_args,
+--     cwd = '${workspaceFolder}',
+--     stopOnEntry = false,
+--   },
+-- }
+
 dapui.setup({
   layouts = {
     {
       elements = {
         'scopes'
       },
-      size = 0.25,
+      size = 0.5,
       position = 'bottom'
     }
   }
@@ -588,6 +631,8 @@ dapui.setup({
 
 dapgo.setup()
 dapruby.setup()
+
+
 
 dap.listeners.before.attach.dapui_config = function()
  dapui.open()
@@ -605,7 +650,11 @@ dap.listeners.before.event_exited.dapui_config = function()
  dapui.close()
 end
 
-vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
+vim.keymap.set('n', '<F5>', function()
+  require('dap').continue()
+end, { noremap=true, silent=true, desc = "Start Debugging with Prompts" })
+
+
 vim.keymap.set('n', '<F3>', function() require('dap').terminate() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
@@ -668,13 +717,13 @@ vim.g.rustaceanvim = {
           chainingHints = true,
           parameterHints = true,
           typeHints = true,
-          maxLength = nil, -- or set a number
+          maxLength = 100, -- or set a number
           parameterHintsPrefix = "<- ",
           otherHintsPrefix = "=> ",
-          rightAlign = false,
+          rightAlign = true,
           rightAlignPadding = 7,
           highlight = "Comment",
-	},
+        },
       },
     },
   },
