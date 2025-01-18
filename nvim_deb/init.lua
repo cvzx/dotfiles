@@ -63,15 +63,6 @@ require("lazy").setup({
     end,
     event = "VeryLazy",
     keys = {
-      -- Show help actions with telescope
-      {
-        "<leader>cch",
-        function()
-          local actions = require("CopilotChat.actions")
-          require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-        end,
-        desc = "CopilotChat - Help actions",
-      },
       -- Show prompts actions with telescope
       {
         "<leader>ccp",
@@ -156,6 +147,11 @@ require("lazy").setup({
 'saadparwaiz1/cmp_luasnip',
 {"L3MON4D3/LuaSnip",version = "v2.*", build = "make install_jsregexp" },
 { "rafamadriz/friendly-snippets" },
+{
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" }
+},
 "tpope/vim-fugitive",
 "AndrewRadev/diffurcate.vim",
 "vim-airline/vim-airline",
@@ -745,3 +741,22 @@ vim.g.rustaceanvim = {
 -- 	},
 -- 	autoEnableHints = true,
 -- }
+
+-- Harpoon setup
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>ma", function() harpoon:list():add() end)
+vim.keymap.set("n", "<C-x>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+--
+vim.keymap.set("n", "<C-j>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-h>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+--
+-- -- Toggle previous & next buffers stored within Harpoon list
+-- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+-- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
