@@ -142,15 +142,17 @@ require("lazy").setup({
     opts = {
       -- add any opts here
       -- for example
-      provider = "openai",
+      provider = "claude",
+      model = 'claude-3-7-sonnet-20250219',
       openai = {
-        endpoint = "https://api.openai.com/v1",
-        model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
         timeout = 30000, -- timeout in milliseconds
         temperature = 0, -- adjust if needed
         max_tokens = 4096,
         -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
       },
+      file_selector = {
+        provider = "fzf_lua", -- Set fzf_lua as the default selector provider
+      }
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
@@ -194,6 +196,13 @@ require("lazy").setup({
       },
     },
   },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {},
+  },
 "github/copilot.vim",
 "rktjmp/lush.nvim",
 "nvim-treesitter/nvim-treesitter-textobjects",
@@ -229,12 +238,12 @@ require("lazy").setup({
 "tpope/vim-unimpaired",
 "ludovicchabant/vim-gutentags",
 "tpope/vim-surround",
-"jiangmiao/auto-pairs",
+-- "jiangmiao/auto-pairs",
 "kassio/neoterm",
 "tpope/vim-dispatch",
 "farmergreg/vim-lastplace",
 "airblade/vim-gitgutter",
-"yggdroot/indentline",
+-- "yggdroot/indentline",
 "tyru/open-browser.vim",
 "tyru/open-browser-github.vim",
 "airblade/vim-rooter",
@@ -322,19 +331,36 @@ vim.o.hlsearch = false
 vim.o.termguicolors = true
 
 -- -- set line length marker
-vim.cmd('set colorcolumn=90')
+-- vim.cmd('set colorcolumn=90')
+vim.cmd('set colorcolumn=100')
 -- -- vim.o.colorcolumn = 100
 
-vim.g.indentLine_char_list = '|'
-vim.g.indent_guides_enable_on_im_startup = 1
-vim.g.indent_guides_auto_colors = 1
+-- vim.g.indentLine_char_list = '|'
+-- vim.g.indent_guides_enable_on_im_startup = 1
+-- vim.g.indent_guides_auto_colors = 1
 
 -- colorschemes
 -- vim.cmd('colorscheme catppuccin')
 -- vim.cmd('colorscheme catppuccin-latte')
--- vim.cmd('colorscheme catppuccin-frappe')
-vim.cmd('colorscheme catppuccin-macchiato')
+vim.cmd('colorscheme catppuccin-frappe')
+-- vim.cmd('colorscheme catppuccin-macchiato')
 -- vim.cmd("colorscheme catppuccin-mocha")
+
+require("catppuccin").setup({
+  integrations = {
+    cmp = true,
+    beacon = true,
+    harpoon = true,
+    gitsigns = true,
+    nvimtree = true,
+    treesitter = true,
+    notify = false,
+    mini = {
+      enabled = true,
+      indentscope_color = "",
+    },
+  }
+})
 
 -- DARK THEME
 vim.o.background = dark
@@ -763,25 +789,37 @@ vim.g.rustaceanvim = {
       vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
       vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
 
+      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
+      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
+      vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, bufopts)
+      
       if client.server_capabilities.inlayHintProvider then
-	      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
     end,
     settings = {
       ['rust-analyzer'] = {
         diagnostics = {
           experimental = true,
+          enable = true,
         },
-      	inlayHints = {
+        inlayHints = {
           chainingHints = true,
           parameterHints = true,
           typeHints = true,
-          maxLength = 100, -- or set a number
+          maxLength = 100,
           parameterHintsPrefix = "<- ",
           otherHintsPrefix = "=> ",
           rightAlign = true,
           rightAlignPadding = 7,
           highlight = "Comment",
+        },
+        checkOnSave = {
+          command = "check",
+        },
+        procMacro = {
+          enable = true,
         },
       },
     },
