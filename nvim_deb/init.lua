@@ -23,7 +23,26 @@ require("lazy").setup({
   },
 "rktjmp/lush.nvim",
 "nvim-treesitter/nvim-treesitter-textobjects",
-{ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
+{
+  "nvim-treesitter/nvim-treesitter",
+  opts = {
+    ensure_installed = {
+      "wit",
+    }
+  },
+  run = ":TSUpdate",
+},
+{
+  "nvim-telescope/telescope.nvim",
+  dependencies = { 'nvim-lua/plenary.nvim' },
+  config = function()
+    require('telescope').setup({
+      defaults = {
+        initial_mode = 'normal',
+      }
+    })
+  end,
+},
 "danilamihailov/beacon.nvim",
 "hrsh7th/nvim-cmp",
 "hrsh7th/cmp-nvim-lsp",
@@ -37,6 +56,7 @@ require("lazy").setup({
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" }
 },
+"nvim-tree/nvim-web-devicons",
 "tpope/vim-fugitive",
 "AndrewRadev/diffurcate.vim",
 "vim-airline/vim-airline",
@@ -47,7 +67,6 @@ require("lazy").setup({
 "janko/vim-test",
 {"junegunn/fzf", dir = "~/.fzf", run = "./install --all"},
 { "ibhagwan/fzf-lua", branch = 'main'},
-"nvim-tree/nvim-web-devicons",
 "jremmen/vim-ripgrep",
 "tpope/vim-endwise",
 "terryma/vim-expand-region",
@@ -73,7 +92,6 @@ require("lazy").setup({
 "francoiscabrol/ranger.vim",
 "rbgrouleff/bclose.vim",
 "hashivim/vim-terraform",
-"majutsushi/tagbar",
 "aserebryakov/vim-todo-lists",
 "tpope/vim-repeat",
 { "mg979/vim-visual-multi", branch = 'master'},
@@ -112,24 +130,13 @@ require("lazy").setup({
 "thoughtbot/vim-rspec",
 "ecomba/vim-ruby-refactoring",
 "rust-lang/rust.vim",
--- "simrat39/rust-tools.nvim",
 {
   'mrcjkb/rustaceanvim',
-  version = '^5', -- Recommended
-  lazy = false, -- This plugin is already lazy
+  version = '^6',
+  lazy = false,
 },
--- {
--- 	"chrisgrieser/nvim-lsp-endhints",
--- 	event = "LspAttach",
--- 	opts = {}, -- required, even if empty
--- },
 "neovim/nvim-lspconfig",
-"williamboman/mason-lspconfig.nvim",
-"williamboman/mason.nvim",
-"jay-babu/mason-nvim-dap.nvim",
 "nvim-lua/plenary.nvim",
-"nvim-telescope/telescope.nvim",
-"jose-elias-alvarez/null-ls.nvim",
 "MunifTanjim/nui.nvim",
 "mfussenegger/nvim-lint",
 "aklt/plantuml-syntax",
@@ -149,7 +156,7 @@ vim.o.termguicolors = true
 
 -- -- set line length marker
 -- vim.cmd('set colorcolumn=90')
-vim.cmd('set colorcolumn=100')
+vim.cmd('set colorcolumn=120')
 -- -- vim.o.colorcolumn = 100
 
 -- vim.g.indentLine_char_list = '|'
@@ -214,7 +221,6 @@ vim.g["test#ruby#rspec#executable"] = "rspec"
 -- rust test
 vim.g['test#rust#cargotest#executable'] = 'cargo nextest run'
 
-
 -- tags
 vim.g.gutentags_file_list_command = 'rg --files'
 vim.g.gutentags_generate_on_new = 1
@@ -244,6 +250,7 @@ vim.keymap.set('n', '<c-P>', function() require('fzf-lua').files() end, {noremap
 vim.keymap.set('n', '<c-B>', function() require('fzf-lua').buffers() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-Q>', function() require('fzf-lua').quickfix() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>s', ':TestNearest<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>so', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>t', ':TestFile<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>a', ':TestSuite<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>l', ':TestLast<CR>', { noremap = true, silent = true })
@@ -252,8 +259,6 @@ vim.keymap.set('x', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('n', '<F1>', ':call SendToTmux("q")<CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<F2>', ':Ranger<CR>', {noremap = true, silent = true})
-vim.keymap.set('n', '<F3>', ':TagbarOpenAutoClose<CR>', {noremap = true, silent = true})
-vim.keymap.set('n', '<Leader><F3>', ':TagbarToggle<CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>rg', ':Rg <C-r>=expand("<cword>")<CR><CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>fc', 'vi\'<C-]><CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>deb', 'odebugger<Esc>', {noremap = true, silent = true})
@@ -288,9 +293,6 @@ vim.keymap.set({"i", "s"}, "<C-E>", function()
     ls.change_choice(1)
   end
 end, {silent = true})
-
-require("mason").setup()
-require("mason-lspconfig").setup()
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = { "rust", "ruby", "go", "lua", "vim", "vimdoc", "query" },
@@ -395,12 +397,6 @@ cmp.setup({
 local dap, dapui = require('dap'), require('dapui')
 local dapgo = require('dap-go')
 local dapruby =  require('dap-ruby')
-
-require("mason-nvim-dap").setup({
-  ensure_installed = { "codelldb" },
-  automatic_installation = true,
-  handlers = {},
-})
 
 local default_executable = vim.fn.getcwd() .. '/../target/debug/epg_pipeline'
 local default_args = { "https://epg-prod.titan.wurl.com/titan_amogonetworx_artflix_1_gb_cf.json" }
