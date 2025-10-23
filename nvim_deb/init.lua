@@ -6,7 +6,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
@@ -43,6 +43,21 @@ require("lazy").setup({
     })
   end,
 },
+-- {
+--   "olimorris/onedarkpro.nvim",
+--   priority = 1000, -- Ensure it loads first
+-- },
+-- {
+--   "navarasu/onedark.nvim",
+--   priority = 1000, -- make sure to load this before all the other start plugins
+--   config = function()
+--     require('onedark').setup {
+--       style = 'warm'
+--     }
+--     -- Enable theme
+--     require('onedark').load()
+--   end
+-- },
 "danilamihailov/beacon.nvim",
 "hrsh7th/nvim-cmp",
 "hrsh7th/cmp-nvim-lsp",
@@ -64,7 +79,37 @@ require("lazy").setup({
 "ryanoasis/vim-devicons",
 "junegunn/vim-easy-align",
 "scrooloose/nerdcommenter",
-"janko/vim-test",
+"nvim-neotest/nvim-nio",
+{
+  'mrcjkb/rustaceanvim',
+  version = '^6',
+  lazy = false,
+},
+{
+  "nvim-neotest/neotest",
+  dependencies = {
+    "nvim-neotest/nvim-nio",
+    "nvim-lua/plenary.nvim",
+    "antoinemadec/FixCursorHold.nvim",
+    "nvim-treesitter/nvim-treesitter"
+  },
+  -- keys = {
+  --   { "<leader>tt", function() require("neotest").run.run() end, desc = "Run Nearest Test" },
+  --   { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File Tests" },
+  --   { "<leader>ta", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "Run All Tests" },
+  --   { "<leader>tl", function() require("neotest").run.run_last() end, desc = "Run Last Test" },
+  --   { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Test Summary" },
+  --   { "<leader>to", function() require("neotest").output.open({ enter = true }) end, desc = "Show Test Output" },
+  --   { "<leader>tx", function() require("neotest").run.stop() end, desc = "Stop Tests" },
+  -- },
+  -- config = function()
+  --   require("neotest").setup({
+  --     adapters = {
+  --       require("rustaceanvim.neotest")
+  --     }
+  --   })
+  -- end,
+},
 {"junegunn/fzf", dir = "~/.fzf", run = "./install --all"},
 { "ibhagwan/fzf-lua", branch = 'main'},
 "jremmen/vim-ripgrep",
@@ -100,17 +145,13 @@ require("lazy").setup({
 "jeetsukumaran/vim-indentwise",
 "wellle/targets.vim",
 "plasticboy/vim-markdown",
-{ "catppuccin/nvim",  as = 'catppuccin' },
+{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 "fabius/molokai.nvim",
-{ "folke/tokyonight.nvim",  branch = 'main' },
 "morhetz/gruvbox",
-"joshdick/onedark.vim",
 "cocopon/iceberg.vim",
 "arcticicestudio/nord-vim",
 "badacadabra/vim-archery",
-{ "dracula/vim",  as = 'dracula' },
 "lifepillar/vim-solarized8",
-"flazz/vim-colorschemes",
 "cormacrelf/vim-colors-github",
 "altercation/vim-colors-solarized",
 "paramagicdev/vim-medic_chalk",
@@ -130,11 +171,6 @@ require("lazy").setup({
 "thoughtbot/vim-rspec",
 "ecomba/vim-ruby-refactoring",
 "rust-lang/rust.vim",
-{
-  'mrcjkb/rustaceanvim',
-  version = '^6',
-  lazy = false,
-},
 "neovim/nvim-lspconfig",
 "nvim-lua/plenary.nvim",
 "MunifTanjim/nui.nvim",
@@ -144,10 +180,28 @@ require("lazy").setup({
 "mfussenegger/nvim-dap",
 "leoluz/nvim-dap-go",
 "suketa/nvim-dap-ruby",
-"nvim-neotest/nvim-nio",
 "rcarriga/nvim-dap-ui",
 "fatih/vim-go",
+{ "EdenEast/nightfox.nvim" },
+{
+	"rose-pine/neovim",
+	name = "rose-pine",
+	-- config = function()
+	-- 	vim.cmd("colorscheme rose-pine")
+	-- end
+	},
+-- "shaunsingh/nord.nvim",
+"rebelot/kanagawa.nvim",
+-- {
+--   'f4z3r/gruvbox-material.nvim',
+--   name = 'gruvbox-material',
+--   lazy = false,
+--   priority = 1000,
+--   opts = {},
+-- },
 })
+
+vim.cmd('set nowrap')
 
 -- Leader key
 vim.g.mapleader = " "
@@ -164,11 +218,6 @@ vim.cmd('set colorcolumn=120')
 -- vim.g.indent_guides_auto_colors = 1
 
 -- colorschemes
--- vim.cmd('colorscheme catppuccin')
--- vim.cmd('colorscheme catppuccin-latte')
-vim.cmd('colorscheme catppuccin-frappe')
--- vim.cmd('colorscheme catppuccin-macchiato')
--- vim.cmd("colorscheme catppuccin-mocha")
 
 require("catppuccin").setup({
   integrations = {
@@ -185,6 +234,46 @@ require("catppuccin").setup({
     },
   }
 })
+
+-- vim.cmd('colorscheme catppuccin-latte')
+-- vim.cmd('colorscheme catppuccin-frappe')
+-- vim.cmd('colorscheme catppuccin-macchiato')
+-- vim.cmd("colorscheme catppuccin-mocha")
+
+-- vim.cmd("colorscheme tokyonight-night")
+-- vim.cmd("colorscheme tokyonight-storm")
+-- vim.cmd("colorscheme tokyonight-day")
+-- vim.cmd("colorscheme tokyonight-moon")
+
+require('nightfox').setup({
+  options = {
+    styles = {
+      comments = "italic",
+      keywords = "bold",
+      types = "italic",
+    }
+  }
+})
+
+vim.cmd("colorscheme nightfox")
+-- vim.cmd("colorscheme duskfox")
+-- vim.cmd("colorscheme nordfox")
+-- vim.cmd("colorscheme terafox")
+-- vim.cmd("colorscheme carbonfox")
+
+-- vim.cmd("colorscheme rose-pine")
+-- vim.cmd("colorscheme rose-pine-moon")
+
+-- vim.cmd("colorscheme nord")
+
+-- vim.cmd("colorscheme kanagawa-wave")
+-- vim.cmd("colorscheme kanagawa-dragon")
+-- vim.cmd("colorscheme kanagawa-lotus")
+
+-- vim.cmd("colorscheme gruvbox-material")
+
+-- require('onedark').load()
+-- vim.cmd("colorscheme onedark")
 
 -- DARK THEME
 vim.o.background = dark
@@ -214,12 +303,14 @@ vim.o.hidden = true
 vim.g.slime_target = "tmux"
 
 -- test runner settings
-vim.g["test#strategy"] = "tslime"
--- vim.g["test#ruby#rspec#executable"] = "spring rspec"
-vim.g["test#ruby#rspec#executable"] = "rspec"
 
--- rust test
-vim.g['test#rust#cargotest#executable'] = 'cargo nextest run'
+-- vim.g["test#strategy"] = "tslime"
+-- -- vim.g["test#ruby#rspec#executable"] = "spring rspec"
+-- vim.g["test#ruby#rspec#executable"] = "rspec"
+--
+-- -- rust test
+-- -- vim.g['test#rust#cargotest#executable'] = 'cargo nextest run'
+-- vim.g['test#rust#runner'] = 'nextest'
 
 -- tags
 vim.g.gutentags_file_list_command = 'rg --files'
@@ -245,16 +336,19 @@ vim.g.rustfmt_autosave = 1
 -- Ruby
 vim.g.ruby_host_prog = '~/.rbenv/versions/3.2.4/bin/neovim-ruby-host'
 
+
 -- Mappings
 vim.keymap.set('n', '<c-P>', function() require('fzf-lua').files() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-B>', function() require('fzf-lua').buffers() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-Q>', function() require('fzf-lua').quickfix() end, {noremap = true, silent = true})
-vim.keymap.set('n', '<Leader>s', ':TestNearest<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>so', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>t', ':TestFile<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>a', ':TestSuite<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>l', ':TestLast<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>v', ':TestVisit<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>tt', function() require("neotest").run.run() end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>ta', function() require("neotest").run.run(vim.loop.cwd()) end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>tl', function() require("neotest").run.run_last() end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>ts', function() require("neotest").summary.toggle() end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>to', function() require("neotest").output.open({ enter = true }) end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>tx', function() require("neotest").run.stop() end, { noremap = true, silent = true })
 vim.keymap.set('x', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('n', '<F1>', ':call SendToTmux("q")<CR>', {noremap = true, silent = true})
@@ -398,9 +492,6 @@ local dap, dapui = require('dap'), require('dapui')
 local dapgo = require('dap-go')
 local dapruby =  require('dap-ruby')
 
-local default_executable = vim.fn.getcwd() .. '/../target/debug/epg_pipeline'
-local default_args = { "https://epg-prod.titan.wurl.com/titan_amogonetworx_artflix_1_gb_cf.json" }
-
 dap.configurations.rust = {
   {
     name = "Launch epg_pipeline with Defaults",
@@ -452,8 +543,6 @@ dapui.setup({
 
 dapgo.setup()
 dapruby.setup()
-
-
 
 dap.listeners.before.attach.dapui_config = function()
  dapui.open()
@@ -512,12 +601,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 local lspconfig = require('lspconfig')
 
 -- Ruby
-lspconfig.solargraph.setup({
+-- lspconfig.solargraph.setup({
+vim.lsp.config("solargraph", {
   init_options = { formatting = true },
   cmd       = { "solargraph", "stdio" },
   filetypes = { "ruby" },
   flags     = { debounce_text_changes = 150 },
-  root_dir  = lspconfig.util.root_pattern("Gemfile", ".git"),
+  -- root_dir  = lspconfig.util.root_pattern("Gemfile", ".git"),
   on_attach = function(_, bufnr)
     local bufopts = { noremap=true, silent=true, buffer=bufnr }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
@@ -536,13 +626,15 @@ lspconfig.solargraph.setup({
     }
   }
 })
+vim.lsp.enable("solargraph")
 
 -- Define a keybinding for triggering rubocop autofix if the current file
 vim.api.nvim_set_keymap('n', '<Leader>af', ':!rubocop -a -f quiet --stderr %<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>pf', ':lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 
 -- Go
-lspconfig.gopls.setup({
+-- lspconfig.gopls.setup({
+vim.lsp.config("gopls", {
     on_attach = function(client, bufnr)
       local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
@@ -568,7 +660,7 @@ lspconfig.gopls.setup({
     end,
     cmd       = { "gopls" },
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
-    root_dir  = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+    -- root_dir  = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
     settings = {
       gopls = {
         completeUnimported = true,
@@ -589,6 +681,7 @@ lspconfig.gopls.setup({
     },
     single_file_support = true,
 })
+vim.lsp.enable("gopls")
 
 -- Rust
 vim.g.rustaceanvim = {
@@ -613,7 +706,7 @@ vim.g.rustaceanvim = {
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
       vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, bufopts)
-      
+
       if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
@@ -647,6 +740,12 @@ vim.g.rustaceanvim = {
   },
   dap = {
   },
+}
+
+require('neotest').setup {
+    adapters = {
+      require('rustaceanvim.neotest')
+    },
 }
 
 -- require("lsp-endhints").setup {
