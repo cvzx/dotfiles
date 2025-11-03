@@ -37,9 +37,9 @@ require("lazy").setup({
   dependencies = { 'nvim-lua/plenary.nvim' },
   config = function()
     require('telescope').setup({
-      defaults = {
-        initial_mode = 'normal',
-      }
+      -- defaults = {
+      --   initial_mode = 'normal',
+      -- }
     })
   end,
 },
@@ -93,22 +93,6 @@ require("lazy").setup({
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter"
   },
-  -- keys = {
-  --   { "<leader>tt", function() require("neotest").run.run() end, desc = "Run Nearest Test" },
-  --   { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File Tests" },
-  --   { "<leader>ta", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "Run All Tests" },
-  --   { "<leader>tl", function() require("neotest").run.run_last() end, desc = "Run Last Test" },
-  --   { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Test Summary" },
-  --   { "<leader>to", function() require("neotest").output.open({ enter = true }) end, desc = "Show Test Output" },
-  --   { "<leader>tx", function() require("neotest").run.stop() end, desc = "Stop Tests" },
-  -- },
-  -- config = function()
-  --   require("neotest").setup({
-  --     adapters = {
-  --       require("rustaceanvim.neotest")
-  --     }
-  --   })
-  -- end,
 },
 {"junegunn/fzf", dir = "~/.fzf", run = "./install --all"},
 { "ibhagwan/fzf-lua", branch = 'main'},
@@ -341,7 +325,17 @@ vim.g.ruby_host_prog = '~/.rbenv/versions/3.2.4/bin/neovim-ruby-host'
 vim.keymap.set('n', '<c-P>', function() require('fzf-lua').files() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-B>', function() require('fzf-lua').buffers() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-Q>', function() require('fzf-lua').quickfix() end, {noremap = true, silent = true})
+
 vim.keymap.set('n', '<leader>so', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sw', ':Telescope lsp_workspace_symbols<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sr', ':Telescope lsp_references<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sd', ':Telescope diagnostics<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>si', ':Telescope lsp_implementations<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sgt', ':Telescope git_status<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sgc', ':Telescope git_commits<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>sgs', ':Telescope git_stash<CR>', { noremap = true, silent = true })
+
 vim.keymap.set('n', '<Leader>tt', function() require("neotest").run.run() end, { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end, { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>ta', function() require("neotest").run.run(vim.loop.cwd()) end, { noremap = true, silent = true })

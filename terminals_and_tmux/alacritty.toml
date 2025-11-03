@@ -1,29 +1,33 @@
-[colors.bright]
-black = "#666666"
-blue = "#819AFF"
-cyan = "#66D9EF"
-green = "#A6E22E"
-magenta = "#AE81FF"
-red = "#F92672"
-white = "#F8F8F2"
-yellow = "#E2E22E"
-
-[colors.normal]
-black = "#333333"
-blue = "#6A7EC8"
-cyan = "#56ADBC"
-green = "#86B42B"
-magenta = "#8C6BC8"
-red = "#C4265E"
-white = "#E3E3DD"
-yellow = "#B3B42B"
-
-[colors.primary]
-background = "#1B1D1E"
-foreground = "#F8F8F2"
+# [colors.bright]
+# black = "#666666"
+# blue = "#819AFF"
+# cyan = "#66D9EF"
+# green = "#A6E22E"
+# magenta = "#AE81FF"
+# red = "#F92672"
+# white = "#F8F8F2"
+# yellow = "#E2E22E"
+#
+# [colors.normal]
+# black = "#333333"
+# blue = "#6A7EC8"
+# cyan = "#56ADBC"
+# green = "#86B42B"
+# magenta = "#8C6BC8"
+# red = "#C4265E"
+# white = "#E3E3DD"
+# yellow = "#B3B42B"
+#
+# [colors.primary]
+# background = "#1B1D1E"
+# foreground = "#F8F8F2"
 
 [font]
-size = 10.5
+size = 10.0
+
+[font.normal]
+family = "FiraCode Nerd Font Mono"
+style = "Regular"
 
 [font.bold]
 family = "FiraCode Nerd Font Mono"
@@ -32,10 +36,6 @@ style = "Bold"
 [font.italic]
 family = "FiraCode Nerd Font Mono"
 style = "Italic"
-
-[font.normal]
-family = "FiraCode Nerd Font Mono"
-style = "Regular"
 
 [[keyboard.bindings]]
 action = "CreateNewWindow"
@@ -47,3 +47,9 @@ decorations = "None"
 startup_mode = "Maximized"
 padding = { x = 5, y = 5 }
 opacity = 0.85
+
+[general]
+# import = ["~/.config/alacritty/themes/themes/nightfox.toml"]
+# import = ["~/.config/alacritty/themes/themes/carbonfox.toml"]
+# import = ["~/.config/alacritty/themes/themes/terafox.toml"]
+import = ["~/.config/alacritty/themes/themes/nordfox.toml"]
