@@ -15,6 +15,55 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "mikavilpas/yazi.nvim",
+    version = "*", -- use the latest stable version
+    event = "VeryLazy",
+    dependencies = {
+      { "nvim-lua/plenary.nvim", lazy = true },
+    },
+    keys = {
+      -- 👇 in this section, choose your own keymappings!
+      {
+        "<leader>-",
+        mode = { "n", "v" },
+        "<cmd>Yazi<cr>",
+        desc = "Open yazi at the current file",
+      },
+      {
+        "<F2>",
+        mode = { "n", "v" },
+        "<cmd>Yazi<cr>",
+        desc = "Open yazi at the current file",
+      },
+      {
+        -- Open in the current working directory
+        "<leader>cw",
+        "<cmd>Yazi cwd<cr>",
+        desc = "Open the file manager in nvim's working directory",
+      },
+      {
+        "<c-up>",
+        "<cmd>Yazi toggle<cr>",
+        desc = "Resume the last yazi session",
+      },
+    },
+    ---@type YaziConfig | {}
+    opts = {
+      -- if you want to open yazi instead of netrw, see below for more info
+      open_for_directories = false,
+      keymaps = {
+        show_help = "<f1>",
+      },
+    },
+    -- 👇 if you use `open_for_directories=true`, this is recommended
+    init = function()
+      -- mark netrw as loaded so it's not loaded at all.
+      --
+      -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
+      vim.g.loaded_netrwPlugin = 1
+    end,
+  },
+  {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     ---@module "ibl"
@@ -118,7 +167,6 @@ require("lazy").setup({
 "andrewradev/splitjoin.vim",
 "xolox/vim-misc",
 "michaeljsmith/vim-indent-object",
-"francoiscabrol/ranger.vim",
 "rbgrouleff/bclose.vim",
 "hashivim/vim-terraform",
 "aserebryakov/vim-todo-lists",
@@ -185,7 +233,8 @@ require("lazy").setup({
 -- },
 })
 
-vim.cmd('set nowrap')
+vim.cmd('set wrap')
+-- vim.cmd('set nowrap')
 
 -- Leader key
 vim.g.mapleader = " "
@@ -204,6 +253,30 @@ vim.cmd('set colorcolumn=120')
 -- colorschemes
 
 require("catppuccin").setup({
+  styles = {
+    comments = { "italic" },
+    keywords = { "bold" },
+    types = { "italic" },
+  },
+
+  custom_highlights = function(colors)
+    return {
+      ["@lsp.type.interface"] = { fg = colors.peach},
+      ["@lsp.type.enum"]      = { fg = colors.rosewater},
+      -- ["@lsp.type.enumMember"] = { fg = colors.teal },
+
+      -- ["@lsp.type.method"] = { fg = colors.maroon },
+      -- ["@method"]          = { fg = colors.maroon },
+
+      ["@lsp.typemod.method.defaultLibrary"] = { fg = colors.sapphire },
+      ["@lsp.typemod.function.defaultLibrary"] = { fg = colors.sapphire },
+
+      ["@lsp.type.namespace"] = { fg = colors.rosewater },
+      -- ["@lsp.typemod.namespace"] = { fg = colors.rosewater },
+    }
+
+  end,
+
   integrations = {
     cmp = true,
     beacon = true,
@@ -216,11 +289,12 @@ require("catppuccin").setup({
       enabled = true,
       indentscope_color = "",
     },
+    lsp_semantic_tokens = true,
   }
 })
 
 -- vim.cmd('colorscheme catppuccin-latte')
--- vim.cmd('colorscheme catppuccin-frappe')
+vim.cmd('colorscheme catppuccin-frappe')
 -- vim.cmd('colorscheme catppuccin-macchiato')
 -- vim.cmd("colorscheme catppuccin-mocha")
 
@@ -229,7 +303,14 @@ require("catppuccin").setup({
 -- vim.cmd("colorscheme tokyonight-day")
 -- vim.cmd("colorscheme tokyonight-moon")
 
+local palette = require("nightfox.palette").load("nightfox")
 require('nightfox').setup({
+  groups = {
+    all = {
+      ["@lsp.type.enum"] = { fg = palette.orange },
+    }
+  },
+
   options = {
     styles = {
       comments = "italic",
@@ -239,7 +320,7 @@ require('nightfox').setup({
   }
 })
 
-vim.cmd("colorscheme nightfox")
+-- vim.cmd("colorscheme nightfox")
 -- vim.cmd("colorscheme duskfox")
 -- vim.cmd("colorscheme nordfox")
 -- vim.cmd("colorscheme terafox")
@@ -249,6 +330,21 @@ vim.cmd("colorscheme nightfox")
 -- vim.cmd("colorscheme rose-pine-moon")
 
 -- vim.cmd("colorscheme nord")
+
+require('kanagawa').setup({
+    compile = true, 
+    
+    overrides = function(colors)
+        local p = colors.palette
+
+        return {
+            -- ["@lsp.type.struct"] = { fg = p.crystalBlue },
+            ["@lsp.type.interface"] = { fg = p.sakuraPink},
+            -- ["@lsp.type.enum"] = { fg = p.surimiOrange},
+            -- ["@lsp.type.enumMember"] = { fg = p.sakuraPink },
+        }
+    end,
+})
 
 -- vim.cmd("colorscheme kanagawa-wave")
 -- vim.cmd("colorscheme kanagawa-dragon")
@@ -346,7 +442,6 @@ vim.keymap.set('n', '<Leader>tx', function() require("neotest").run.stop() end, 
 vim.keymap.set('x', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('n', '<F1>', ':call SendToTmux("q")<CR>', {noremap = true, silent = true})
-vim.keymap.set('n', '<F2>', ':Ranger<CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>rg', ':Rg <C-r>=expand("<cword>")<CR><CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>fc', 'vi\'<C-]><CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>deb', 'odebugger<Esc>', {noremap = true, silent = true})
