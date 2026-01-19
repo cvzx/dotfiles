@@ -49,7 +49,13 @@ padding = { x = 5, y = 5 }
 opacity = 0.85
 
 [general]
+# import = ["~/.config/alacritty/themes/themes/catppuccin_macchiato.toml"]
+# import = ["~/.config/alacritty/themes/themes/catppuccin_frappe.toml"]
+
+import = ["~/.config/alacritty/themes/themes/kanagawa_wave.toml"]
+
 # import = ["~/.config/alacritty/themes/themes/nightfox.toml"]
 # import = ["~/.config/alacritty/themes/themes/carbonfox.toml"]
 # import = ["~/.config/alacritty/themes/themes/terafox.toml"]
-import = ["~/.config/alacritty/themes/themes/nordfox.toml"]
+# import = ["~/.config/alacritty/themes/themes/nordfox.toml"]
+# import = ["~/.config/alacritty/themes/themes/duskfox.toml"]

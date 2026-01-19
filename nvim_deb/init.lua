@@ -22,7 +22,6 @@ require("lazy").setup({
       { "nvim-lua/plenary.nvim", lazy = true },
     },
     keys = {
-      -- 👇 in this section, choose your own keymappings!
       {
         "<leader>-",
         mode = { "n", "v" },
@@ -294,7 +293,7 @@ require("catppuccin").setup({
 })
 
 -- vim.cmd('colorscheme catppuccin-latte')
-vim.cmd('colorscheme catppuccin-frappe')
+-- vim.cmd('colorscheme catppuccin-frappe')
 -- vim.cmd('colorscheme catppuccin-macchiato')
 -- vim.cmd("colorscheme catppuccin-mocha")
 
@@ -346,7 +345,7 @@ require('kanagawa').setup({
     end,
 })
 
--- vim.cmd("colorscheme kanagawa-wave")
+vim.cmd("colorscheme kanagawa-wave")
 -- vim.cmd("colorscheme kanagawa-dragon")
 -- vim.cmd("colorscheme kanagawa-lotus")
 
