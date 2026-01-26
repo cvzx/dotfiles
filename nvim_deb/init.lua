@@ -15,6 +15,21 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
+  {
     "mikavilpas/yazi.nvim",
     version = "*", -- use the latest stable version
     event = "VeryLazy",
@@ -261,7 +276,7 @@ require("catppuccin").setup({
   custom_highlights = function(colors)
     return {
       ["@lsp.type.interface"] = { fg = colors.peach},
-      ["@lsp.type.enum"]      = { fg = colors.rosewater},
+      -- ["@lsp.type.enum"]      = { fg = colors.rosewater},
       -- ["@lsp.type.enumMember"] = { fg = colors.teal },
 
       -- ["@lsp.type.method"] = { fg = colors.maroon },
@@ -292,16 +307,6 @@ require("catppuccin").setup({
   }
 })
 
--- vim.cmd('colorscheme catppuccin-latte')
--- vim.cmd('colorscheme catppuccin-frappe')
--- vim.cmd('colorscheme catppuccin-macchiato')
--- vim.cmd("colorscheme catppuccin-mocha")
-
--- vim.cmd("colorscheme tokyonight-night")
--- vim.cmd("colorscheme tokyonight-storm")
--- vim.cmd("colorscheme tokyonight-day")
--- vim.cmd("colorscheme tokyonight-moon")
-
 local palette = require("nightfox.palette").load("nightfox")
 require('nightfox').setup({
   groups = {
@@ -319,17 +324,6 @@ require('nightfox').setup({
   }
 })
 
--- vim.cmd("colorscheme nightfox")
--- vim.cmd("colorscheme duskfox")
--- vim.cmd("colorscheme nordfox")
--- vim.cmd("colorscheme terafox")
--- vim.cmd("colorscheme carbonfox")
-
--- vim.cmd("colorscheme rose-pine")
--- vim.cmd("colorscheme rose-pine-moon")
-
--- vim.cmd("colorscheme nord")
-
 require('kanagawa').setup({
     compile = true, 
     
@@ -345,7 +339,43 @@ require('kanagawa').setup({
     end,
 })
 
-vim.cmd("colorscheme kanagawa-wave")
+require("tokyonight").setup({
+  on_highlights = function(hl, c)
+    -- hl["@lsp.type.enum"] = { fg = c.magenta, italic = true }
+    hl["@lsp.type.interface"] = { fg = c.red }
+    
+  end,
+  styles = {
+    comments = { italic = true },
+    keywords = { bold = true },
+    functions = {},
+    variables = {},
+  },
+})
+
+-- vim.cmd('colorscheme catppuccin-latte')
+-- vim.cmd('colorscheme catppuccin-frappe')
+-- vim.cmd('colorscheme catppuccin-macchiato')
+-- vim.cmd("colorscheme catppuccin-mocha")
+
+-- vim.cmd("colorscheme tokyonight-night")
+vim.cmd("colorscheme tokyonight-storm")
+-- vim.cmd("colorscheme tokyonight-day")
+-- vim.cmd("colorscheme tokyonight-moon")
+
+
+-- vim.cmd("colorscheme nightfox")
+-- vim.cmd("colorscheme duskfox")
+-- vim.cmd("colorscheme nordfox")
+-- vim.cmd("colorscheme terafox")
+-- vim.cmd("colorscheme carbonfox")
+
+-- vim.cmd("colorscheme rose-pine")
+-- vim.cmd("colorscheme rose-pine-moon")
+
+-- vim.cmd("colorscheme nord")
+
+-- vim.cmd("colorscheme kanagawa-wave")
 -- vim.cmd("colorscheme kanagawa-dragon")
 -- vim.cmd("colorscheme kanagawa-lotus")
 
