@@ -11,9 +11,41 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   })
 end
 
+-- Leader key
+vim.g.mapleader = " "
+
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  {
+    "coder/claudecode.nvim",
+    lazy = false,
+    priority = 1000,
+    dependencies = { "folke/snacks.nvim" },
+    opts = {
+       terminal_cmd = "~/.local/bin/claude"
+    },
+    config = true,
+    keys = {
+      { "<leader>a", nil, desc = "AI/Claude Code" },
+      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>afo", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+      {
+        "<leader>as",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
+      },
+      -- Diff management
+      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    },
+  },
   {
     "folke/tokyonight.nvim",
     lazy = false,
@@ -250,8 +282,6 @@ require("lazy").setup({
 vim.cmd('set wrap')
 -- vim.cmd('set nowrap')
 
--- Leader key
-vim.g.mapleader = " "
 vim.o.hlsearch = false
 vim.o.termguicolors = true
 
@@ -359,9 +389,9 @@ require("tokyonight").setup({
 -- vim.cmd("colorscheme catppuccin-mocha")
 
 -- vim.cmd("colorscheme tokyonight-night")
-vim.cmd("colorscheme tokyonight-storm")
+-- vim.cmd("colorscheme tokyonight-storm")
 -- vim.cmd("colorscheme tokyonight-day")
--- vim.cmd("colorscheme tokyonight-moon")
+vim.cmd("colorscheme tokyonight-moon")
 
 
 -- vim.cmd("colorscheme nightfox")
@@ -450,6 +480,9 @@ vim.g.ruby_host_prog = '~/.rbenv/versions/3.2.4/bin/neovim-ruby-host'
 vim.keymap.set('n', '<c-P>', function() require('fzf-lua').files() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-B>', function() require('fzf-lua').buffers() end, {noremap = true, silent = true})
 vim.keymap.set('n', '<c-Q>', function() require('fzf-lua').quickfix() end, {noremap = true, silent = true})
+
+vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = "Window commands from terminal" })
+-- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = "Exit terminal mode" })
 
 vim.keymap.set('n', '<leader>so', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>sg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
