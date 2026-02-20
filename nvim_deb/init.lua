@@ -18,6 +18,24 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+      "TmuxNavigatorProcessList",
+    },
+    keys = {
+      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+    },
+  },
+  {
     "coder/claudecode.nvim",
     lazy = false,
     priority = 1000,
@@ -391,7 +409,7 @@ require("tokyonight").setup({
 -- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd("colorscheme tokyonight-storm")
 -- vim.cmd("colorscheme tokyonight-day")
-vim.cmd("colorscheme tokyonight-moon")
+-- vim.cmd("colorscheme tokyonight-moon")
 
 
 -- vim.cmd("colorscheme nightfox")
@@ -405,7 +423,7 @@ vim.cmd("colorscheme tokyonight-moon")
 
 -- vim.cmd("colorscheme nord")
 
--- vim.cmd("colorscheme kanagawa-wave")
+vim.cmd("colorscheme kanagawa-wave")
 -- vim.cmd("colorscheme kanagawa-dragon")
 -- vim.cmd("colorscheme kanagawa-lotus")
 
