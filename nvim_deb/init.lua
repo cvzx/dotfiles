@@ -18,6 +18,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = true,
+  },
+  {
     "christoomey/vim-tmux-navigator",
     cmd = {
       "TmuxNavigateLeft",
@@ -156,21 +161,21 @@ require("lazy").setup({
     })
   end,
 },
--- {
---   "olimorris/onedarkpro.nvim",
---   priority = 1000, -- Ensure it loads first
--- },
--- {
---   "navarasu/onedark.nvim",
---   priority = 1000, -- make sure to load this before all the other start plugins
---   config = function()
---     require('onedark').setup {
---       style = 'warm'
---     }
---     -- Enable theme
---     require('onedark').load()
---   end
--- },
+{
+  "navarasu/onedark.nvim",
+  config = function()
+    require('onedark').setup {
+      -- style = 'dark'
+      -- style = 'darker'
+      -- style = 'cool'
+      style = 'deep'
+      -- style = 'warm'
+      -- style = 'warmer'
+    }
+  end,
+
+  priority = 1000, -- make sure to load this before all the other start plugins
+},
 "danilamihailov/beacon.nvim",
 "hrsh7th/nvim-cmp",
 "hrsh7th/cmp-nvim-lsp",
@@ -243,7 +248,6 @@ require("lazy").setup({
 "plasticboy/vim-markdown",
 { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 "fabius/molokai.nvim",
-"morhetz/gruvbox",
 "cocopon/iceberg.vim",
 "arcticicestudio/nord-vim",
 "badacadabra/vim-archery",
@@ -401,16 +405,49 @@ require("tokyonight").setup({
   },
 })
 
+require('onedark').setup({
+  code_style = {
+    comments = 'italic',
+    keywords = 'bold',
+    functions = 'none',
+    variables = 'none',
+  },
+
+  highlights = {
+    ["@lsp.type.interface"] = { fg = '$red' },
+    -- ["@lsp.type.enum"] = { fg = '$purple', fmt = 'italic' },
+  },
+})
+
+require("gruvbox").setup({
+  contrast = "hard", -- "hard", "soft" "" (default)
+  italic = {
+    strings = false,
+    comments = true,
+    operators = false,
+    folds = true,
+    emphasis = true,
+  },
+  bold = true,
+
+  overrides = {
+    ["@lsp.type.interface"] = { fg = "#fb4934" },
+    -- ["@lsp.type.enum"] = { fg = "#d3869b", italic = true },
+    ["@keyword"] = { bold = true },
+    ["@function"] = { bold = false },
+  },
+})
+
 -- vim.cmd('colorscheme catppuccin-latte')
 -- vim.cmd('colorscheme catppuccin-frappe')
 -- vim.cmd('colorscheme catppuccin-macchiato')
 -- vim.cmd("colorscheme catppuccin-mocha")
 
+-- vim.cmd("colorscheme tokyonight")
 -- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd("colorscheme tokyonight-storm")
 -- vim.cmd("colorscheme tokyonight-day")
 -- vim.cmd("colorscheme tokyonight-moon")
-
 
 -- vim.cmd("colorscheme nightfox")
 -- vim.cmd("colorscheme duskfox")
@@ -418,19 +455,25 @@ require("tokyonight").setup({
 -- vim.cmd("colorscheme terafox")
 -- vim.cmd("colorscheme carbonfox")
 
+-- require('onedark').load()
+vim.cmd("colorscheme onedark")
+
+-- vim.cmd("colorscheme kanagawa-wave")
+-- vim.cmd("colorscheme kanagawa-dragon")
+-- vim.cmd("colorscheme kanagawa-lotus")
+
+-- vim.cmd("colorscheme gruvbox")
+-- vim.g.gruvbox_contrast_dark = "soft"
+-- vim.g.gruvbox_contrast_dark = "medium"
+-- vim.g.gruvbox_contrast_dark = "hard"
+-- vim.cmd("colorscheme gruvbox-material")
+
 -- vim.cmd("colorscheme rose-pine")
 -- vim.cmd("colorscheme rose-pine-moon")
 
 -- vim.cmd("colorscheme nord")
 
-vim.cmd("colorscheme kanagawa-wave")
--- vim.cmd("colorscheme kanagawa-dragon")
--- vim.cmd("colorscheme kanagawa-lotus")
 
--- vim.cmd("colorscheme gruvbox-material")
-
--- require('onedark').load()
--- vim.cmd("colorscheme onedark")
 
 -- DARK THEME
 vim.o.background = dark
