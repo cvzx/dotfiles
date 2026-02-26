@@ -18,6 +18,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = true,
@@ -291,7 +296,6 @@ require("lazy").setup({
 	-- end
 	},
 -- "shaunsingh/nord.nvim",
-"rebelot/kanagawa.nvim",
 -- {
 --   'f4z3r/gruvbox-material.nvim',
 --   name = 'gruvbox-material',
@@ -377,7 +381,7 @@ require('nightfox').setup({
 })
 
 require('kanagawa').setup({
-    compile = true, 
+    compile = false, 
     
     overrides = function(colors)
         local p = colors.palette
@@ -476,7 +480,7 @@ vim.cmd("colorscheme onedark")
 
 
 -- DARK THEME
-vim.o.background = dark
+vim.o.background = "dark"
 -- vim.g.airline_theme = "solarized_flood"
 
 -- indents
@@ -523,12 +527,12 @@ vim.g.gutentags_ctags_extra_args = {'--tag-relative=yes', '--fields=+ailmnS'}
 vim.g.gutentags_exclude_filetypes = {'gitcommit', 'gitconfig', 'gitrebase', 'gitsendemail', 'git'}
 
 -- Gitgutter settings
-vim.g.gitgutter_override_sign_column_highlight = 0
-vim.cmd('highlight clear SignColumn')
-vim.cmd('highlight GitGutterAdd guifg=Green ctermfg=2')
-vim.cmd('highlight GitGutterChange guifg=Olive ctermfg=3')
-vim.cmd('highlight GitGutterDelete guifg=Maroon ctermfg=1')
-vim.cmd('highlight GitGutterChangeDelete guifg=Navy ctermfg=4')
+-- vim.g.gitgutter_override_sign_column_highlight = 0
+-- vim.cmd('highlight clear SignColumn')
+-- vim.cmd('highlight GitGutterAdd guifg=Green ctermfg=2')
+-- vim.cmd('highlight GitGutterChange guifg=Olive ctermfg=3')
+-- vim.cmd('highlight GitGutterDelete guifg=Maroon ctermfg=1')
+-- vim.cmd('highlight GitGutterChangeDelete guifg=Navy ctermfg=4')
 
 -- Rust
 vim.g.rustfmt_autosave = 1
@@ -985,10 +989,10 @@ harpoon:setup()
 vim.keymap.set("n", "<leader>ma", function() harpoon:list():add() end)
 vim.keymap.set("n", "<C-x>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 --
-vim.keymap.set("n", "<C-j>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-h>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
 --
 -- -- Toggle previous & next buffers stored within Harpoon list
 -- vim.keymap.set("n", "<C-\\>", function() harpoon:list():next() end)
