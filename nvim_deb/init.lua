@@ -1,6 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -17,6 +17,29 @@ vim.g.mapleader = " "
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  {
+    "echasnovski/mini.pairs",
+    version = "*",
+    opts = {},
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      options = {
+        theme = "auto",
+      },
+    },
+  },
+  {
+    'embark-theme/vim',
+    lazy = false,
+    priority = 1000,
+    name = 'embark'
+  },
+  {
+    "nyoom-engineering/oxocarbon.nvim"
+  },
   {
     "rebelot/kanagawa.nvim",
     lazy = false,
@@ -81,15 +104,6 @@ require("lazy").setup({
     opts = {},
   },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
-  },
-  {
     "mikavilpas/yazi.nvim",
     version = "*", -- use the latest stable version
     event = "VeryLazy",
@@ -145,16 +159,6 @@ require("lazy").setup({
     opts = {},
   },
 "rktjmp/lush.nvim",
-"nvim-treesitter/nvim-treesitter-textobjects",
-{
-  "nvim-treesitter/nvim-treesitter",
-  opts = {
-    ensure_installed = {
-      "wit",
-    }
-  },
-  run = ":TSUpdate",
-},
 {
   "nvim-telescope/telescope.nvim",
   dependencies = { 'nvim-lua/plenary.nvim' },
@@ -197,8 +201,6 @@ require("lazy").setup({
 "nvim-tree/nvim-web-devicons",
 "tpope/vim-fugitive",
 "AndrewRadev/diffurcate.vim",
-"vim-airline/vim-airline",
-"vim-airline/vim-airline-themes",
 "ryanoasis/vim-devicons",
 "junegunn/vim-easy-align",
 "scrooloose/nerdcommenter",
@@ -213,8 +215,6 @@ require("lazy").setup({
   dependencies = {
     "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
-    "antoinemadec/FixCursorHold.nvim",
-    "nvim-treesitter/nvim-treesitter"
   },
 },
 {"junegunn/fzf", dir = "~/.fzf", run = "./install --all"},
@@ -222,16 +222,13 @@ require("lazy").setup({
 "jremmen/vim-ripgrep",
 "tpope/vim-endwise",
 "terryma/vim-expand-region",
-"tmhedberg/matchit",
 "tpope/vim-unimpaired",
 "ludovicchabant/vim-gutentags",
 "tpope/vim-surround",
--- "jiangmiao/auto-pairs",
 "kassio/neoterm",
 "tpope/vim-dispatch",
 "farmergreg/vim-lastplace",
 "airblade/vim-gitgutter",
--- "yggdroot/indentline",
 "tyru/open-browser.vim",
 "tyru/open-browser-github.vim",
 "airblade/vim-rooter",
@@ -247,7 +244,6 @@ require("lazy").setup({
 "tpope/vim-repeat",
 { "mg979/vim-visual-multi", branch = 'master'},
 "kshenoy/vim-signature",
-"tpope/vim-sensible",
 "jeetsukumaran/vim-indentwise",
 "wellle/targets.vim",
 "plasticboy/vim-markdown",
@@ -276,7 +272,6 @@ require("lazy").setup({
 "thoughtbot/vim-rspec",
 "ecomba/vim-ruby-refactoring",
 "rust-lang/rust.vim",
-"neovim/nvim-lspconfig",
 "nvim-lua/plenary.nvim",
 "MunifTanjim/nui.nvim",
 "mfussenegger/nvim-lint",
@@ -291,36 +286,18 @@ require("lazy").setup({
 {
 	"rose-pine/neovim",
 	name = "rose-pine",
-	-- config = function()
-	-- 	vim.cmd("colorscheme rose-pine")
-	-- end
 	},
--- "shaunsingh/nord.nvim",
--- {
---   'f4z3r/gruvbox-material.nvim',
---   name = 'gruvbox-material',
---   lazy = false,
---   priority = 1000,
---   opts = {},
--- },
 })
 
 vim.cmd('set wrap')
 -- vim.cmd('set nowrap')
 
 vim.o.hlsearch = false
-vim.o.termguicolors = true
 
 -- -- set line length marker
 -- vim.cmd('set colorcolumn=90')
 vim.cmd('set colorcolumn=120')
 -- -- vim.o.colorcolumn = 100
-
--- vim.g.indentLine_char_list = '|'
--- vim.g.indent_guides_enable_on_im_startup = 1
--- vim.g.indent_guides_auto_colors = 1
-
--- colorschemes
 
 require("catppuccin").setup({
   styles = {
@@ -353,7 +330,7 @@ require("catppuccin").setup({
     harpoon = true,
     gitsigns = true,
     nvimtree = true,
-    treesitter = true,
+    -- treesitter = true,
     notify = false,
     mini = {
       enabled = true,
@@ -363,50 +340,67 @@ require("catppuccin").setup({
   }
 })
 
-local palette = require("nightfox.palette").load("nightfox")
-require('nightfox').setup({
-  groups = {
-    all = {
-      ["@lsp.type.enum"] = { fg = palette.orange },
-    }
-  },
-
-  options = {
-    styles = {
-      comments = "italic",
-      keywords = "bold",
-      types = "italic",
-    }
-  }
-})
+-- local palette = require("nightfox.palette").load("nightfox")
+-- require('nightfox').setup({
+--   groups = {
+--     all = {
+--       ["@lsp.type.enum"] = { fg = palette.orange },
+--     }
+--   },
+--
+--   options = {
+--     styles = {
+--       comments = "italic",
+--       keywords = "bold",
+--       types = "italic",
+--     }
+--   }
+-- })
 
 require('kanagawa').setup({
-    compile = false, 
-    
-    overrides = function(colors)
-        local p = colors.palette
+  compile = false,             -- enable compiling the colorscheme
+  undercurl = true,            -- enable undercurls
+  commentStyle = { italic = true },
+  functionStyle = {},
+  keywordStyle = { italic = true},
+  statementStyle = { bold = true },
+  typeStyle = {},
+  transparent = false,         -- do not set background color
+  dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+  terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+  colors = {                   -- add/modify theme and palette colors
+    palette = {},
+    theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+  },
+  overrides = function(colors) -- add/modify highlights
+    local p = colors.palette
 
-        return {
-            -- ["@lsp.type.struct"] = { fg = p.crystalBlue },
-            ["@lsp.type.interface"] = { fg = p.sakuraPink},
-            -- ["@lsp.type.enum"] = { fg = p.surimiOrange},
-            -- ["@lsp.type.enumMember"] = { fg = p.sakuraPink },
-        }
-    end,
+    return {
+      -- ["@lsp.type.struct"] = { fg = p.crystalBlue },
+      ["@lsp.type.interface"] = { fg = p.sakuraPink},
+      -- ["@lsp.type.enum"] = { fg = p.surimiOrange},
+      -- ["@lsp.type.enumMember"] = { fg = p.sakuraPink },
+    }
+  end,
+  theme = "wave",              -- Load "wave" theme
+  background = {               -- map the value of 'background' option to a theme
+    dark = "wave",           -- try "dragon" !
+    light = "lotus"
+  },
 })
 
 require("tokyonight").setup({
   on_highlights = function(hl, c)
     -- hl["@lsp.type.enum"] = { fg = c.magenta, italic = true }
     hl["@lsp.type.interface"] = { fg = c.red }
-    
+
   end,
-  styles = {
-    comments = { italic = true },
-    keywords = { bold = true },
-    functions = {},
-    variables = {},
-  },
+  -- styles = {
+  --   comments = { italic = true },
+  --   keywords = { bold = true },
+  --   functions = {},
+  --   variables = {},
+  -- },
 })
 
 require('onedark').setup({
@@ -447,7 +441,6 @@ require("gruvbox").setup({
 -- vim.cmd('colorscheme catppuccin-macchiato')
 -- vim.cmd("colorscheme catppuccin-mocha")
 
--- vim.cmd("colorscheme tokyonight")
 -- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd("colorscheme tokyonight-storm")
 -- vim.cmd("colorscheme tokyonight-day")
@@ -460,9 +453,9 @@ require("gruvbox").setup({
 -- vim.cmd("colorscheme carbonfox")
 
 -- require('onedark').load()
-vim.cmd("colorscheme onedark")
+-- vim.cmd("colorscheme onedark")
 
--- vim.cmd("colorscheme kanagawa-wave")
+vim.cmd("colorscheme kanagawa-wave")
 -- vim.cmd("colorscheme kanagawa-dragon")
 -- vim.cmd("colorscheme kanagawa-lotus")
 
@@ -477,11 +470,11 @@ vim.cmd("colorscheme onedark")
 
 -- vim.cmd("colorscheme nord")
 
-
+-- vim.cmd("colorscheme oxocarbon")
+-- vim.cmd("colorscheme embark")
 
 -- DARK THEME
 vim.o.background = "dark"
--- vim.g.airline_theme = "solarized_flood"
 
 -- indents
 vim.o.expandtab = true
@@ -500,21 +493,8 @@ vim.o.cursorline = true
 vim.g.NERDSpaceDelims = 1
 vim.g.NERDCompactSexyComs = 1
 
--- Required for operations modifying multiple buffers like rename.
-vim.o.hidden = true
-
 -- slime settings
 vim.g.slime_target = "tmux"
-
--- test runner settings
-
--- vim.g["test#strategy"] = "tslime"
--- -- vim.g["test#ruby#rspec#executable"] = "spring rspec"
--- vim.g["test#ruby#rspec#executable"] = "rspec"
---
--- -- rust test
--- -- vim.g['test#rust#cargotest#executable'] = 'cargo nextest run'
--- vim.g['test#rust#runner'] = 'nextest'
 
 -- tags
 vim.g.gutentags_file_list_command = 'rg --files'
@@ -525,14 +505,6 @@ vim.g.gutentags_generate_on_empty_buffer = 0
 vim.g.gutentags_ctags_auto_set_tags = 1
 vim.g.gutentags_ctags_extra_args = {'--tag-relative=yes', '--fields=+ailmnS'}
 vim.g.gutentags_exclude_filetypes = {'gitcommit', 'gitconfig', 'gitrebase', 'gitsendemail', 'git'}
-
--- Gitgutter settings
--- vim.g.gitgutter_override_sign_column_highlight = 0
--- vim.cmd('highlight clear SignColumn')
--- vim.cmd('highlight GitGutterAdd guifg=Green ctermfg=2')
--- vim.cmd('highlight GitGutterChange guifg=Olive ctermfg=3')
--- vim.cmd('highlight GitGutterDelete guifg=Maroon ctermfg=1')
--- vim.cmd('highlight GitGutterChangeDelete guifg=Navy ctermfg=4')
 
 -- Rust
 vim.g.rustfmt_autosave = 1
@@ -549,6 +521,22 @@ vim.keymap.set('n', '<c-Q>', function() require('fzf-lua').quickfix() end, {nore
 vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = "Window commands from terminal" })
 -- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = "Exit terminal mode" })
 
+-- Neovim 0.12 provides these global LSP mappings by default:
+--    gra → code actions
+--    gri → implementations
+--    grn → rename
+--    grr → references
+--    grt → type definition
+--    grx → run codelens
+--    gO → document symbols
+--    Ctrl-S in Insert mode → signature help
+--    K → hover
+--    gx also handles textDocument/documentLink when the server supports it.
+
+-- These are NOT defaults and need to be set explicitly:
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = "Go to declaration" })
+
 vim.keymap.set('n', '<leader>so', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>sg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>sw', ':Telescope lsp_workspace_symbols<CR>', { noremap = true, silent = true })
@@ -561,7 +549,7 @@ vim.keymap.set('n', '<leader>sgs', ':Telescope git_stash<CR>', { noremap = true,
 
 vim.keymap.set('n', '<Leader>tt', function() require("neotest").run.run() end, { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end, { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>ta', function() require("neotest").run.run(vim.loop.cwd()) end, { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>ta', function() require("neotest").run.run(vim.uv.cwd()) end, { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>tl', function() require("neotest").run.run_last() end, { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>ts', function() require("neotest").summary.toggle() end, { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>to', function() require("neotest").output.open({ enter = true }) end, { noremap = true, silent = true })
@@ -603,54 +591,6 @@ vim.keymap.set({"i", "s"}, "<C-E>", function()
     ls.change_choice(1)
   end
 end, {silent = true})
-
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "rust", "ruby", "go", "lua", "vim", "vimdoc", "query" },
-  highlight = { enable = true },
-  endwise = { enable = true },
-  indent = { enable = false },
-
-  textobjects = {
-    select = {
-      enable = true,
-      -- Automatically jump forward to textobj, similar to targets.vim
-      lookahead = true,
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        -- You can optionally set descriptions to the mappings (used in the desc parameter of
-        -- nvim_buf_set_keymap) which plugins like which-key display
-        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-        -- You can also use captures from other query groups like `locals.scm`
-        ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-      },
-      -- You can choose the select mode (default is charwise 'v')
-      --
-      -- Can also be a function which gets passed a table with the keys
-      -- * query_string: eg '@function.inner'
-      -- * method: eg 'v' or 'o'
-      -- and should return the mode ('v', 'V', or '<c-v>') or a table
-      -- mapping query_strings to modes.
-      selection_modes = {
-        ['@parameter.outer'] = 'v', -- charwise
-        ['@function.outer'] = 'V', -- linewise
-        ['@class.outer'] = '<c-v>', -- blockwise
-      },
-      -- If you set this to `true` (default is `false`) then any textobject is
-      -- extended to include preceding or succeeding whitespace. Succeeding
-      -- whitespace has priority in order to act similarly to eg the built-in
-      -- `ap`.
-      --
-      -- Can also be a function which gets passed a table with the keys
-      -- * query_string: eg '@function.inner'
-      -- * selection_mode: eg 'v'
-      -- and should return true of false
-      include_surrounding_whitespace = true,
-    },
-  },
-}
 
 local cmp = require("cmp")
 
@@ -812,30 +752,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
--- LSP settings
-
-local lspconfig = require('lspconfig')
 
 -- Ruby
--- lspconfig.solargraph.setup({
 vim.lsp.config("solargraph", {
   init_options = { formatting = true },
   cmd       = { "solargraph", "stdio" },
   filetypes = { "ruby" },
   flags     = { debounce_text_changes = 150 },
-  -- root_dir  = lspconfig.util.root_pattern("Gemfile", ".git"),
-  on_attach = function(_, bufnr)
-    local bufopts = { noremap=true, silent=true, buffer=bufnr }
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', 'gz', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
-  end,
   settings =  {
     solargraph = {
       diagnostics = true
@@ -849,34 +772,12 @@ vim.api.nvim_set_keymap('n', '<Leader>af', ':!rubocop -a -f quiet --stderr %<CR>
 vim.api.nvim_set_keymap('n', '<leader>pf', ':lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 
 -- Go
--- lspconfig.gopls.setup({
 vim.lsp.config("gopls", {
     on_attach = function(client, bufnr)
-      local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-      vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-      vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-      vim.keymap.set('n', 'gz', vim.lsp.buf.code_action, bufopts)
-      vim.keymap.set('v', 'gz', vim.lsp.buf.code_action, bufopts)
-      vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
-
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
-      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
-      vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, bufopts)
-
-      -- if client.server_capabilities.inlayHintProvider then
-	      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-      -- end
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     end,
     cmd       = { "gopls" },
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
-    -- root_dir  = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
     settings = {
       gopls = {
         completeUnimported = true,
@@ -906,26 +807,19 @@ vim.g.rustaceanvim = {
   server = {
     autostart = true,
     on_attach = function(client, bufnr)
-      local bufopts = { noremap=true, silent=true, buffer=bufnr }
-      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-      vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-      vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-      vim.keymap.set('n', 'gz', vim.lsp.buf.code_action, bufopts)
-      vim.keymap.set('v', 'gz', vim.lsp.buf.code_action, bufopts)
-      vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
-
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
-      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
-      vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, bufopts)
-
       if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
+      if client.supports_method("textDocument/codeLens") then
+        vim.lsp.codelens.refresh()
+        vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold" }, {
+          buffer = bufnr,
+          callback = function() vim.lsp.codelens.refresh({ bufnr = bufnr }) end,
+        })
+      end
+      vim.keymap.set('n', '<C-W>d', function()
+        vim.cmd.RustLsp({'renderDiagnostic', 'current'})
+      end, { buffer = bufnr, desc = "Show Rust diagnostic" })
     end,
     settings = {
       ['rust-analyzer'] = {
@@ -934,15 +828,7 @@ vim.g.rustaceanvim = {
           enable = true,
         },
         inlayHints = {
-          chainingHints = true,
-          parameterHints = true,
-          typeHints = true,
-          maxLength = 100,
-          parameterHintsPrefix = "<- ",
-          otherHintsPrefix = "=> ",
-          rightAlign = true,
-          rightAlignPadding = 7,
-          highlight = "Comment",
+          enable = true,
         },
         checkOnSave = {
           enable = true,
@@ -964,21 +850,6 @@ require('neotest').setup {
     },
 }
 
--- require("lsp-endhints").setup {
--- 	icons = {
--- 		type = "󰜁 ",
--- 		parameter = "󰏪 ",
--- 		offspec = " ", -- hint kind not defined in official LSP spec
--- 		unknown = " ", -- hint kind is nil
--- 	},
--- 	label = {
--- 		padding = 1,
--- 		marginLeft = 0,
--- 		bracketedParameters = true,
--- 	},
--- 	autoEnableHints = true,
--- }
-
 -- Harpoon setup
 local harpoon = require("harpoon")
 
@@ -988,12 +859,7 @@ harpoon:setup()
 
 vim.keymap.set("n", "<leader>ma", function() harpoon:list():add() end)
 vim.keymap.set("n", "<C-x>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
---
 vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
 vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
---
--- -- Toggle previous & next buffers stored within Harpoon list
--- vim.keymap.set("n", "<C-\\>", function() harpoon:list():next() end)
--- vim.keymap.set("n", "<C-,>", function() harpoon:list():prev() end)
