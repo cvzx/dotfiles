@@ -12,6 +12,11 @@ return {
   "tpope/vim-repeat",
   "tpope/vim-endwise",
   "tpope/vim-unimpaired",
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+  },
   "terryma/vim-expand-region",
   "tmhedberg/matchit",
   "easymotion/vim-easymotion",

@@ -2,6 +2,8 @@ vim.cmd('set wrap')
 vim.o.hlsearch = false
 vim.cmd('set colorcolumn=120')
 vim.o.background = "dark"
+-- enables exrc for custom configuration per project
+vim.o.exrc = true
 
 -- treesitter
 vim.api.nvim_create_autocmd("FileType", {
@@ -19,9 +21,9 @@ vim.api.nvim_create_autocmd("FileType", {
 -- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd("colorscheme tokyonight-storm")
 -- vim.cmd("colorscheme tokyonight-day")
-vim.cmd("colorscheme tokyonight-moon")
+-- vim.cmd("colorscheme tokyonight-moon")
 
--- vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme nightfox")
 -- vim.cmd("colorscheme duskfox")
 -- vim.cmd("colorscheme nordfox")
 -- vim.cmd("colorscheme terafox")

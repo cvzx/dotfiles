@@ -8,6 +8,7 @@ vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = "Window commands from 
 
 -- LSP
 -- Neovim 0.12 provides these global LSP mappings by default:
+--    <C-W>d → show diagnostics popup
 --    gra → code actions
 --    gri → implementations
 --    grn → rename

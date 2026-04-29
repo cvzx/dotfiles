@@ -15,6 +15,23 @@ return {
       local dapgo = require('dap-go')
       local dapruby = require('dap-ruby')
 
+      -- When you want dap spawn codelldb as a server
+      dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = "/usr/bin/codelldb",
+          args = { "--port", "${port}" }
+        },
+      }
+
+      -- When you already have running codelldb server on 13000 port
+      -- dap.adapters.codelldb = {
+      --   type = "server",
+      --   host = "127.0.0.1",
+      --   port = 13000,
+      -- }
+
       dap.configurations.rust = {
         {
           name = "Launch epg_pipeline with Defaults",
@@ -34,7 +51,21 @@ return {
             end
           end,
           cwd = '${workspaceFolder}',
+          sourceLanguages = { "rust" },
           stopOnEntry = false,
+          initCommands = { "breakpoint set --name rust_panic" },
+          -- - showDisassembly = "never" — don't open the disasm view when sources are unavailable (e.g. inside std).
+          -- - expressions = "native" — Watches/REPL expressions are parsed as Rust instead of Python (default is "simple").
+          --   Useful when you want to write things like self.field.len() in Watches.
+          -- - env = { RUST_LOG = "debug", ... } — environment variables for the debugged process.
+          -- - terminal = "integrated" or "console" — where to route the app's stdout/stdin. Servers that read stdin need "integrated".
+          -- - runInTerminal = true — same idea, alternative way to do it.
+          --
+          -- Rust devs also commonly enable a panic breakpoint so the debugger catches panic! automatically. Via initCommands:
+          -- initCommands = {
+            --   "breakpoint set --name rust_panic",
+            -- },
+
         },
       }
 
